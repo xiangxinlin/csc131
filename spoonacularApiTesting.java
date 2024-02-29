@@ -4,6 +4,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+
 public class spoonacularApiTesting {
     
     public static void main(String[] args){
@@ -31,8 +32,16 @@ public class spoonacularApiTesting {
                     infoString.append(line);
                 }
                 read.close();
+                // parse the JSON manually given from API
+                String jsonResponse = infoString.toString();
+                String[] recipes = jsonResponse.split("\"results\":\\[")[1].split("\\],\"offset\"")[0].split("\\},\\{");
 
-                System.out.println(infoString.toString());
+                System.out.println("Recipes found:");
+                for (String recipe : recipes) {
+                    String title = recipe.split("\"title\":\"")[1].split("\",\"")[0];
+                    String image = recipe.split("\"image\":\"")[1].split("\",\"")[0];
+                    System.out.println(title + " - " + image);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
