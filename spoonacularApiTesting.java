@@ -37,10 +37,12 @@ public class spoonacularApiTesting {
                 String[] recipes = jsonResponse.split("\"results\":\\[")[1].split("\\],\"offset\"")[0].split("\\},\\{");
 
                 System.out.println("Recipes found:");
+                int recipeNumber = 1;
                 for (String recipe : recipes) {
                     String title = recipe.split("\"title\":\"")[1].split("\",\"")[0];
                     String image = recipe.split("\"image\":\"")[1].split("\",\"")[0];
-                    System.out.println(title + " - " + image);
+                    System.out.println(recipeNumber + ". " + title + " - " + image);
+                    recipeNumber ++;
                 }
             }
         }catch (Exception e){
