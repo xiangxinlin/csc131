@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.List;
 import org.bson.Document;
 
+//class currently responsible for interacting with the API to search for recipes
 public class spoonacularApiTesting {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -15,17 +16,21 @@ public class spoonacularApiTesting {
         String findQuery = scan.nextLine();
 
         try {
+            //API key for accessing 
             String apiKey = "41c2b73f2580458ea8e845483f07dbee";
+            //URL for querying the API
             String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + findQuery + "&apiKey=" + apiKey;
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
 
+            //checks HTTP response
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
                 throw new RuntimeException("HttpResponseCode: " + responseCode);
             } else {
+                //read and process API response
                 StringBuilder infoString = new StringBuilder();
                 BufferedReader read = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -35,9 +40,11 @@ public class spoonacularApiTesting {
                 }
                 read.close();
 
+                //Extract recipe info from API response
                 String jsonResponse = infoString.toString();
                 String[] recipes = jsonResponse.split("\"results\":\\[")[1].split("\\],\"offset\"")[0].split("\\},\\{");
 
+                //Display found recipes to user
                 System.out.println("Recipes found:");
                 int recipeNumber = 1;
                 for (String recipe : recipes) {
@@ -47,9 +54,11 @@ public class spoonacularApiTesting {
                     recipeNumber++;
                 }
 
+                //ask if user wants to save recipes
                 System.out.println("Enter the numbers of the recipes you want to save, separated by spaces, or enter 'none' to skip:");
                 String input = scan.nextLine();
 
+                //process if the user input for saving recipes
                 if (!input.equalsIgnoreCase("none")) {
                     String[] selectedRecipeNumbers = input.split("\\s+");
                     for (String recipeNumberStr : selectedRecipeNumbers) {
@@ -62,6 +71,7 @@ public class spoonacularApiTesting {
                             String imageType = selectedRecipe.split("\"imageType\":\"")[1].split("\",\"")[0];
 
                             recipeSaver recipeSaver = new recipeSaver();
+                            //save the selected recipe 
                             recipeSaver.saveRecipe(Integer.parseInt(id), title, image, imageType, true);
                             System.out.println("Recipe '" + title + "' saved successfully!");
                         } else {
@@ -71,10 +81,12 @@ public class spoonacularApiTesting {
                 } else {
                     System.out.println("No recipe saved.");
                 }
+                
                 // Ask the user if they want to view their list of saved recipes
                 System.out.println("Do you want to view your list of saved recipes? (yes/no)");
                 String viewListInput = scan.nextLine();
                 if (viewListInput.equalsIgnoreCase("yes")) {
+                    //displays saved recipe if user typed yes
                     recipeSaver recipeSaver = new recipeSaver();
                     List<Document> savedRecipes = recipeSaver.getSavedRecipes();
                     if (!savedRecipes.isEmpty()) {
