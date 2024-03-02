@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.List;
+import org.bson.Document;
 
 public class spoonacularApiTesting {
     public static void main(String[] args) {
@@ -69,11 +71,28 @@ public class spoonacularApiTesting {
                 } else {
                     System.out.println("No recipe saved.");
                 }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            scan.close();
-        }
-    }
+                   // Ask the user if they want to view their list of saved recipes
+                   System.out.println("Do you want to view your list of saved recipes? (yes/no)");
+                   String viewListInput = scan.nextLine();
+                   if (viewListInput.equalsIgnoreCase("yes")) {
+                       recipeSaver recipeSaver = new recipeSaver();
+                       List<Document> savedRecipes = recipeSaver.getSavedRecipes();
+                       if (!savedRecipes.isEmpty()) {
+                           System.out.println("Your list of saved recipes:");
+                           for (Document savedRecipe : savedRecipes) {
+                               String savedTitle = savedRecipe.getString("title");
+                               String savedImageUrl = savedRecipe.getString("image");
+                               System.out.println(savedTitle + " - " + savedImageUrl);
+                           }
+                       } else {
+                           System.out.println("No saved recipes found.");
+                       }
+                   }
+               }
+           } catch (Exception e) {
+               e.printStackTrace();
+           } finally {
+               scan.close();
+           }
+       }
 }
