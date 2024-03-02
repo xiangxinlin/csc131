@@ -10,11 +10,12 @@ import java.util.List;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 
+//class for saving recipes and retrieving recipes from database
 public class recipeSaver {
     // MongoDB connection string
     private static final String MONGODB_URI = "mongodb+srv://nick:csus@csc131.tct5wqu.mongodb.net/";
 
-    // Method to save a recipe to the MongoDB database
+    //saveRecipe used to save a recipe to the database
     public void saveRecipe(int id, String title, String imageUrl, String imageType, boolean saveConfirmed) {
         if (!saveConfirmed) {
             System.out.println("Recipe not saved. User declined to save.");
@@ -39,6 +40,7 @@ public class recipeSaver {
             System.err.println("Error saving recipe to MongoDB: " + e.getMessage());
         }
     }
+    //method to reteieve the list of saved recipes from the data base
     public List<Document> getSavedRecipes() {
         List<Document> savedRecipes = new ArrayList<>();
         try (MongoClient mongoClient = MongoClients.create(MONGODB_URI)) {
