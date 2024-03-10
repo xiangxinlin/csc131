@@ -15,10 +15,10 @@ public class deleteRecipe {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Enter what you would like to delete by:");
-            String key = scanner.nextLine().trim();
+            String field = scanner.nextLine().trim();
             System.out.println("Enter the value for this field:");
             String value = scanner.nextLine().trim();
-            deleteDocument(key, value);
+            deleteDocument(field, value);
         } catch (Exception e) {
             e.printStackTrace();
         }
