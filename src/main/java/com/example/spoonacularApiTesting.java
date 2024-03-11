@@ -109,9 +109,9 @@ public class spoonacularApiTesting {
                     List<Document> savedRecipes = recipeSaver.getSavedRecipes();
                     if(!savedRecipes.isEmpty()){
                         do{
-                            System.out.println("Enter what category you would like to delete by:");
+                            System.out.println("Enter what category you would like to delete by: (title for now)");
                             String field = scan.nextLine().trim();
-                            System.out.println("Enter the value for this field:");
+                            System.out.println("Enter the title of the recipe you wish to delete:");
                             String value = scan.nextLine().trim();
                             deleteRecipe.deleteDocument(field, value);
 
@@ -132,9 +132,9 @@ public class spoonacularApiTesting {
                         do{
                             System.out.println("Enter the title of the recipe you would like to update:");
                             String title = scan.nextLine().trim();
-                            System.out.println("Enter the field you would like to update:");
+                            System.out.println("Enter the part of the recipe you would like to update: (title/image/imageType)");
                             String field = scan.nextLine().trim();
-                            System.out.println("Enter the new value for this field:");
+                            System.out.println("Enter the new content for this field:");
                             String value = scan.nextLine().trim();
                             updateRecipe.updateDocument(title, field, value);
 
