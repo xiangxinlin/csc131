@@ -100,6 +100,27 @@ public class spoonacularApiTesting {
                         System.out.println("No saved recipes found.");
                     }
                 }
+
+                //Ask the user if they want to delete a recipe
+                System.out.println("Do you want to delete a recipe? (yes/no)");
+                String deleteOption = scan.nextLine();
+                if(deleteOption.equalsIgnoreCase("yes")){
+                    recipeSaver recipeSaver = new recipeSaver();
+                    List<Document> savedRecipes = recipeSaver.getSavedRecipes();
+                    if(!savedRecipes.isEmpty()){
+                        do{
+                            System.out.println("Enter what category you would like to delete by:");
+                            String field = scan.nextLine().trim();
+                            System.out.println("Enter the value for this field:");
+                            String value = scan.nextLine().trim();
+                            deleteRecipe.deleteDocument(field, value);
+
+                            System.out.println("Would you like to delete anything else? (yes/no)");
+                        }while(scan.nextLine().equalsIgnoreCase("yes"));
+                    }else{
+                        System.out.println("No recipe available to delete.");
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
