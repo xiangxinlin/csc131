@@ -32,7 +32,7 @@ public class updateRecipe {
                 // Updates the first document that has a "title" value of the provided title
                 UpdateResult result = collection.updateOne(query, updates, options);
 
-                // Prints the number of updated documents and the upserted document ID, if an upsert was performed
+                // Prints the number of updated documents and the upserted document id, if an upsert was performed
                 System.out.println("Modified document count: " + result.getModifiedCount());
                 System.out.println("Upserted id: " + result.getUpsertedId());
 

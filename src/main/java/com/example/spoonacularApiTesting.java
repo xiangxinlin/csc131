@@ -130,7 +130,7 @@ public class spoonacularApiTesting {
                     List<Document> savedRecipes = recipeSaver.getSavedRecipes();
                     if(!savedRecipes.isEmpty()){
                         do{
-                            System.out.println("Enter the title for the recipe you would like to update:");
+                            System.out.println("Enter the title of the recipe you would like to update:");
                             String title = scan.nextLine().trim();
                             System.out.println("Enter the field you would like to update:");
                             String field = scan.nextLine().trim();
