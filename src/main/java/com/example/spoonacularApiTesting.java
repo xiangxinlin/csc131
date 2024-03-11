@@ -121,6 +121,29 @@ public class spoonacularApiTesting {
                         System.out.println("No recipe available to delete.");
                     }
                 }
+
+                //Ask the user if they want to update a recipe
+                System.out.println("Do you want to update a recipe? (yes/no)");
+                String updateOption = scan.nextLine();
+                if(updateOption.equalsIgnoreCase("yes")){
+                    recipeSaver recipeSaver = new recipeSaver();
+                    List<Document> savedRecipes = recipeSaver.getSavedRecipes();
+                    if(!savedRecipes.isEmpty()){
+                        do{
+                            System.out.println("Enter the title for the recipe you would like to update:");
+                            String title = scan.nextLine().trim();
+                            System.out.println("Enter the field you would like to update:");
+                            String field = scan.nextLine().trim();
+                            System.out.println("Enter the new value for this field:");
+                            String value = scan.nextLine().trim();
+                            updateRecipe.updateDocument(title, field, value);
+
+                            System.out.println("Would you like to update anything else? (yes/no)");
+                        }while(scan.nextLine().equalsIgnoreCase("yes"));
+                    }else{
+                        System.out.println("No recipe available to delete.");
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
