@@ -8,29 +8,31 @@ import java.util.Scanner;
 import java.util.List;
 import org.bson.Document;
 
-//class currently responsible for interacting with the API to search for recipes
-public class spoonacularApiTesting {
+// Class responsible for interacting with the Spoonacular API to search for recipes
+public class searchByTitle {
     public static void main(String[] args) {
+        // Scanner for user input
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter your query: ");
         String findQuery = scan.nextLine();
 
         try {
-            //API key for accessing 
+            // API key for accessing the Spoonacular API
             String apiKey = "41c2b73f2580458ea8e845483f07dbee";
-            //URL for querying the API
+            // URL for querying the Spoonacular API
             String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + findQuery + "&apiKey=" + apiKey;
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
 
-            //checks HTTP response
+            // Check HTTP response
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
+                // If response code is not 200, throw an exception
                 throw new RuntimeException("HttpResponseCode: " + responseCode);
             } else {
-                //read and process API response
+                // Read and process API response
                 StringBuilder infoString = new StringBuilder();
                 BufferedReader read = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -40,11 +42,11 @@ public class spoonacularApiTesting {
                 }
                 read.close();
 
-                //Extract recipe info from API response
+                // Extract recipe info from API response
                 String jsonResponse = infoString.toString();
                 String[] recipes = jsonResponse.split("\"results\":\\[")[1].split("\\],\"offset\"")[0].split("\\},\\{");
 
-                //Display found recipes to user
+                // Display found recipes to user
                 System.out.println("Recipes found:");
                 int recipeNumber = 1;
                 for (String recipe : recipes) {
@@ -54,11 +56,11 @@ public class spoonacularApiTesting {
                     recipeNumber++;
                 }
 
-                //ask if user wants to save recipes
+                // Ask if user wants to save recipes
                 System.out.println("Enter the numbers of the recipes you want to save, separated by spaces, or enter 'none' to skip:");
                 String input = scan.nextLine();
 
-                //process if the user input for saving recipes
+                // Process user input for saving recipes
                 if (!input.equalsIgnoreCase("none")) {
                     String[] selectedRecipeNumbers = input.split("\\s+");
                     for (String recipeNumberStr : selectedRecipeNumbers) {
@@ -71,7 +73,7 @@ public class spoonacularApiTesting {
                             String imageType = selectedRecipe.split("\"imageType\":\"")[1].split("\",\"")[0];
 
                             recipeSaver recipeSaver = new recipeSaver();
-                            //save the selected recipe 
+                            // Save the selected recipe
                             recipeSaver.saveRecipe(Integer.parseInt(id), title, image, imageType, true);
                             System.out.println("Recipe '" + title + "' saved successfully!");
                         } else {
@@ -86,66 +88,25 @@ public class spoonacularApiTesting {
                 System.out.println("Do you want to view your list of saved recipes? (yes/no)");
                 String viewListInput = scan.nextLine();
                 if (viewListInput.equalsIgnoreCase("yes")) {
-                    //displays saved recipe if user typed yes
+                    // Display saved recipes if user typed yes
                     recipeSaver recipeSaver = new recipeSaver();
                     List<Document> savedRecipes = recipeSaver.getSavedRecipes();
                     if (!savedRecipes.isEmpty()) {
                         System.out.println("Your list of saved recipes:");
+                        int index = 1;
                         for (Document savedRecipe : savedRecipes) {
                             String savedTitle = savedRecipe.getString("title");
                             String savedImageUrl = savedRecipe.getString("image");
-                            System.out.println(savedTitle + " - " + savedImageUrl);
+                            System.out.println(index + ": " + savedTitle + " - " + savedImageUrl);
+                            index ++;
                         }
                     } else {
                         System.out.println("No saved recipes found.");
                     }
                 }
-
-                //Ask the user if they want to delete a recipe
-                System.out.println("Do you want to delete a recipe? (yes/no)");
-                String deleteOption = scan.nextLine();
-                if(deleteOption.equalsIgnoreCase("yes")){
-                    recipeSaver recipeSaver = new recipeSaver();
-                    List<Document> savedRecipes = recipeSaver.getSavedRecipes();
-                    if(!savedRecipes.isEmpty()){
-                        do{
-                            System.out.println("Enter what category you would like to delete by: (title for now)");
-                            String field = scan.nextLine().trim();
-                            System.out.println("Enter the title of the recipe you wish to delete:");
-                            String value = scan.nextLine().trim();
-                            deleteRecipe.deleteDocument(field, value);
-
-                            System.out.println("Would you like to delete anything else? (yes/no)");
-                        }while(scan.nextLine().equalsIgnoreCase("yes"));
-                    }else{
-                        System.out.println("No recipe available to delete.");
-                    }
-                }
-
-                //Ask the user if they want to update a recipe
-                System.out.println("Do you want to update a recipe? (yes/no)");
-                String updateOption = scan.nextLine();
-                if(updateOption.equalsIgnoreCase("yes")){
-                    recipeSaver recipeSaver = new recipeSaver();
-                    List<Document> savedRecipes = recipeSaver.getSavedRecipes();
-                    if(!savedRecipes.isEmpty()){
-                        do{
-                            System.out.println("Enter the title of the recipe you would like to update:");
-                            String title = scan.nextLine().trim();
-                            System.out.println("Enter the part of the recipe you would like to update: (title/image/imageType)");
-                            String field = scan.nextLine().trim();
-                            System.out.println("Enter the new content for this field:");
-                            String value = scan.nextLine().trim();
-                            updateRecipe.updateDocument(title, field, value);
-
-                            System.out.println("Would you like to update anything else? (yes/no)");
-                        }while(scan.nextLine().equalsIgnoreCase("yes"));
-                    }else{
-                        System.out.println("No recipe available to delete.");
-                    }
-                }
             }
         } catch (Exception e) {
+            // Handle any exceptions that occur during the process
             e.printStackTrace();
         } finally {
             scan.close();
