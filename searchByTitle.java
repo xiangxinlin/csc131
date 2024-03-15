@@ -8,31 +8,29 @@ import java.util.Scanner;
 import java.util.List;
 import org.bson.Document;
 
-// Class responsible for interacting with the Spoonacular API to search for recipes
+//class currently responsible for interacting with the API to search for recipes
 public class searchByTitle {
     public static void main(String[] args) {
-        // Scanner for user input
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter your query: ");
         String findQuery = scan.nextLine();
 
         try {
-            // API key for accessing the Spoonacular API
+            //API key for accessing 
             String apiKey = "41c2b73f2580458ea8e845483f07dbee";
-            // URL for querying the Spoonacular API
+            //URL for querying the API
             String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + findQuery + "&apiKey=" + apiKey;
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
 
-            // Check HTTP response
+            //checks HTTP response
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
-                // If response code is not 200, throw an exception
                 throw new RuntimeException("HttpResponseCode: " + responseCode);
             } else {
-                // Read and process API response
+                //read and process API response
                 StringBuilder infoString = new StringBuilder();
                 BufferedReader read = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -42,11 +40,11 @@ public class searchByTitle {
                 }
                 read.close();
 
-                // Extract recipe info from API response
+                //Extract recipe info from API response
                 String jsonResponse = infoString.toString();
                 String[] recipes = jsonResponse.split("\"results\":\\[")[1].split("\\],\"offset\"")[0].split("\\},\\{");
 
-                // Display found recipes to user
+                //Display found recipes to user
                 System.out.println("Recipes found:");
                 int recipeNumber = 1;
                 for (String recipe : recipes) {
@@ -56,11 +54,11 @@ public class searchByTitle {
                     recipeNumber++;
                 }
 
-                // Ask if user wants to save recipes
+                //ask if user wants to save recipes
                 System.out.println("Enter the numbers of the recipes you want to save, separated by spaces, or enter 'none' to skip:");
                 String input = scan.nextLine();
 
-                // Process user input for saving recipes
+                //process if the user input for saving recipes
                 if (!input.equalsIgnoreCase("none")) {
                     String[] selectedRecipeNumbers = input.split("\\s+");
                     for (String recipeNumberStr : selectedRecipeNumbers) {
@@ -73,7 +71,7 @@ public class searchByTitle {
                             String imageType = selectedRecipe.split("\"imageType\":\"")[1].split("\",\"")[0];
 
                             recipeSaver recipeSaver = new recipeSaver();
-                            // Save the selected recipe
+                            //save the selected recipe 
                             recipeSaver.saveRecipe(Integer.parseInt(id), title, image, imageType, true);
                             System.out.println("Recipe '" + title + "' saved successfully!");
                         } else {
@@ -88,7 +86,7 @@ public class searchByTitle {
                 System.out.println("Do you want to view your list of saved recipes? (yes/no)");
                 String viewListInput = scan.nextLine();
                 if (viewListInput.equalsIgnoreCase("yes")) {
-                    // Display saved recipes if user typed yes
+                    //displays saved recipe if user typed yes
                     recipeSaver recipeSaver = new recipeSaver();
                     List<Document> savedRecipes = recipeSaver.getSavedRecipes();
                     if (!savedRecipes.isEmpty()) {
@@ -106,10 +104,7 @@ public class searchByTitle {
                 }
             }
         } catch (Exception e) {
-            // Handle any exceptions that occur during the process
             e.printStackTrace();
-        } finally {
-            scan.close();
-        }
+        } 
     }
 }
