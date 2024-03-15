@@ -11,12 +11,13 @@ public class HomePage {
         while (true) {
             System.out.println("\nProceed with your Commands: ");
             System.out.println("1. Search by Title");
-            System.out.println("2. Search by Ingredients");
-            System.out.println("3. Search by Cuisine");
-            System.out.println("4. Search by Diet");
-            System.out.println("5. Update a Recipe");
-            System.out.println("6. Delete a Recipe");
-            System.out.println("7. Exit");
+            System.out.println("2. Search by ID"); 
+            System.out.println("3. Search by Ingredients");
+            System.out.println("4. Search by Cuisine");
+            System.out.println("5. Search by Diet");
+            System.out.println("6. Update a Recipe");
+            System.out.println("7. Delete a Recipe");
+            System.out.println("8. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -28,30 +29,34 @@ public class HomePage {
                     searchByTitle.main(new String[]{});
                     break;
                 case 2:
+                    System.out.println("\nSearching by ID...");
+                    searchByID.main(new String[]{});
+                    break;
+                case 3:
                     System.out.println("\nSearching by Ingredients...");
                     searchByIngredients.main(new String[]{});
                     break;
-                case 3:
+                case 4:
                     System.out.println("\nSearching by Cuisine...");
                     searchByCuisine.main(new String[]{});
                     break;
-                case 4:
+                case 5:
                     System.out.println("\nSearching by Diet...");
                     searchByDiet.main(new String[]{});
                     break;
-                case 5:
+                case 6:
                     System.out.println("\nUpdating a Recipe...");
                     updateRecipe.main(new String[]{});
                     break;
-                case 6:
+                case 7:
                     System.out.println("\nDeleting a Recipe...");
                     deleteRecipe.main(new String[]{});
                     break;
-                case 7:
+                case 8:
                     System.out.println("Exiting...");
                     return; // Exit the application
                 default:
-                    System.out.println("Invalid choice, please enter a number between 1 and 7.");
+                    System.out.println("Invalid choice, please enter a number between 1 and 8.");
             }
         }
     }
