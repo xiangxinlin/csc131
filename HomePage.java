@@ -1,3 +1,4 @@
+//in progress needs to be updated as we go
 package com.example;
 
 import java.util.Scanner;
