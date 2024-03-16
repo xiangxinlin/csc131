@@ -26,23 +26,28 @@ public class HomePage {
             switch (choice) {
                 case 1:
                     System.out.println("\nSearching by Title...");
-                    searchByTitle.main(new String[]{});
+                    searchByTitle SearchByTitle = new searchByTitle();
+                    SearchByTitle.searchTitle();
                     break;
                 case 2:
                     System.out.println("\nSearching by ID...");
-                    searchByID.main(new String[]{});
+                    searchByID SearchByID = new searchByID();
+                    SearchByID.searchID();
                     break;
                 case 3:
                     System.out.println("\nSearching by Ingredients...");
-                    searchByIngredients.main(new String[]{});
+                    searchByIngredients SearchByIngredients = new searchByIngredients();
+                    SearchByIngredients.searchIngredients();
                     break;
                 case 4:
                     System.out.println("\nSearching by Cuisine...");
-                    searchByCuisine.main(new String[]{});
+                    searchByCuisine SearchByCuisine =  new searchByCuisine();
+                    SearchByCuisine.searchCuisine();
                     break;
                 case 5:
                     System.out.println("\nSearching by Diet...");
-                    searchByDiet.main(new String[]{});
+                    searchByDiet SearchByDiet = new searchByDiet();
+                    SearchByDiet.searchDiet();
                     break;
                 case 6:
                     System.out.println("\nUpdating a Recipe...");
