@@ -11,7 +11,7 @@ public class deleteRecipe {
     // MongoDB connection URI
     private static final String MONGODB_URI = "mongodb+srv://nick:csus@csc131.tct5wqu.mongodb.net/";
 
-    public static void main(String[] args) {
+    public void delete(){
         // Use scanner for user input
         try (Scanner scanner = new Scanner(System.in)) {
             // Prompt user to enter the title of the recipe to delete
