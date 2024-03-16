@@ -13,7 +13,7 @@ public class searchByCuisine{
 
     private static final String API_KEY = "41c2b73f2580458ea8e845483f07dbee"; // API Key included as requested
 
-    public static void main(String[] args) {
+    public void searchCuisine() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the cuisine type (e.g., Italian, Indian):");
         String cuisine = scanner.nextLine().trim();
