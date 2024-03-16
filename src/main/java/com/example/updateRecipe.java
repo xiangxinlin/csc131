@@ -12,7 +12,7 @@ public class updateRecipe {
     // MongoDB connection URI
     private static final String MONGODB_URI = "mongodb+srv://nick:csus@csc131.tct5wqu.mongodb.net/";
 
-    public static void main(String[] args) {
+    public void update() {
         try (Scanner scanner = new Scanner(System.in)) {
             // User input for recipe details to update
             System.out.println("Enter the title of the recipe you'd like to update:");
