@@ -11,7 +11,7 @@ public class searchByID {
 
     private static final String API_KEY = "41c2b73f2580458ea8e845483f07dbee"; // Your API key
 
-    public static void main(String[] args) {
+    public void searchID() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the ID of the recipe you'd like to find:");
         String recipeId = scanner.nextLine().trim();
