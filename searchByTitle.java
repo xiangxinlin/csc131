@@ -10,7 +10,7 @@ import org.bson.Document;
 
 //class currently responsible for interacting with the API to search for recipes
 public class searchByTitle {
-    public static void main(String[] args) {
+    public void searchTitle() {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter your query: ");
         String findQuery = scan.nextLine();
