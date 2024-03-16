@@ -51,11 +51,13 @@ public class HomePage {
                     break;
                 case 6:
                     System.out.println("\nUpdating a Recipe...");
-                    updateRecipe.main(new String[]{});
+                    updateRecipe UpdateRecipe = new updateRecipe();
+                    UpdateRecipe.update();
                     break;
                 case 7:
                     System.out.println("\nDeleting a Recipe...");
-                    deleteRecipe.main(new String[]{});
+                    deleteRecipe DeleteRecipe = new deleteRecipe();
+                    DeleteRecipe.delete();
                     break;
                 case 8:
                     System.out.println("Exiting...");
