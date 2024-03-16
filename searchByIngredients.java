@@ -11,7 +11,7 @@ public class searchByIngredients {
 
     private static final String API_KEY = "41c2b73f2580458ea8e845483f07dbee"; // API Key included as requested
 
-    public static void main(String[] args) {
+    public void searchIngredients() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter ingredients separated by commas (e.g., tomato,egg):");
         String ingredients = scanner.nextLine().trim();
