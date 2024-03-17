@@ -13,8 +13,8 @@ public class updateRecipe {
     private static final String MONGODB_URI = "mongodb+srv://nick:csus@csc131.tct5wqu.mongodb.net/";
 
     public void update() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            // User input for recipe details to update
+        try {
+            Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the title of the recipe you'd like to update:");
             String title = scanner.nextLine();
             System.out.println("Enter the field you want to update:");
@@ -22,8 +22,9 @@ public class updateRecipe {
             System.out.println("Enter the new value for the field:");
             String value = scanner.nextLine();
 
-            // Call method to update the recipe document
             updateDocument(title, field, value);
+        }catch(Exception e){
+
         }
     }
 
