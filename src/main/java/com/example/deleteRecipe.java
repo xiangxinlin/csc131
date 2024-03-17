@@ -13,13 +13,14 @@ public class deleteRecipe {
 
     public void delete(){
         // Use scanner for user input
-        try (Scanner scanner = new Scanner(System.in)) {
-            // Prompt user to enter the title of the recipe to delete
+        try {
+            Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the title of the recipe you wish to delete:");
             String title = scanner.nextLine();
 
-            // Call method to delete the specified recipe
             deleteDocument(title);
+        }catch(Exception e){
+
         }
     }
 
