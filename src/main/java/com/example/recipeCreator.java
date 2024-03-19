@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class recipeCreator{
     private static final String MONGODB_URI = "mongodb+srv://nick:csus@csc131.tct5wqu.mongodb.net/";
-    public recipeCreator(){
+    public void create(){
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the title of the recipe you'd like to create:");
