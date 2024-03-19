@@ -15,18 +15,18 @@ public class recipeCreator{
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the title of the recipe you'd like to create:");
             String title = scanner.nextLine();
-            System.out.println("Enter the image link address for the recipe, if none, enter 'none':");
-            String image = scanner.nextLine();
-            System.out.println("Enter the image type for the recipe, if none, enter 'none':");
-            String imageType = scanner.nextLine();
+            System.out.println("Enter the ingredients separated by commas:");
+            String ingredients = scanner.nextLine();
+            System.out.println("Enter the instructions:");
+            String instructions = scanner.nextLine();
 
-            createRecipe(title, image, imageType);
+            createRecipe(title, ingredients, instructions);
         }catch(Exception e){
             System.err.println("An error occurred while processing the input: " + e.getMessage());
         }
     }
 
-    public void createRecipe(String title, String image, String imageType){
+    public void createRecipe(String title, String ingredients, String instructions){
 
         try (MongoClient mongoClient = MongoClients.create(MONGODB_URI)) {
             // Connect to MongoDB and access the specified database and collection
@@ -35,11 +35,11 @@ public class recipeCreator{
 
             // Create a new document
             Document document = new Document();
-            document.append("title", title).append("image", image).append("imageType", imageType);
+            document.append("title", title).append("ingredients", ingredients).append("instructions", instructions);
             // Insert the document into the collection
             collection.insertOne(document);
 
-            System.out.println("Document created successfully.");
+            System.out.println("Recipe created successfully.");
 
         } catch (Exception e) {
             // Handle any exceptions that occur during the update process
