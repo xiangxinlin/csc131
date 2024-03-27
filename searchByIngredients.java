@@ -17,8 +17,8 @@ public class searchByIngredients {
         String ingredients = scanner.nextLine().trim();
 
         String requestURL = String.format(
-                "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&includeIngredients=%s&addRecipeInformation=true&number=10",
-                API_KEY, ingredients);
+            "https://api.spoonacular.com/recipes/findByIngredients?apiKey=%s&ingredients=%s",
+            API_KEY, ingredients);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
