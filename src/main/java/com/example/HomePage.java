@@ -18,7 +18,8 @@ public class HomePage {
             System.out.println("6. Update a Recipe");
             System.out.println("7. Delete a Recipe");
             System.out.println("8. Create a Recipe");
-            System.out.println("9. Exit");
+            System.out.println("9. View a Recipe");
+            System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -66,6 +67,11 @@ public class HomePage {
                     RecipeCreator.create();
                     break;
                 case 9:
+                    System.out.println("\nViewing a Recipe");
+                    viewRecipes ViewRecipes = new viewRecipes();
+                    ViewRecipes.recipeView();
+                    break;
+                case 0:
                     System.out.println("Exiting...");
                     return; // Exit the application
                 default:
