@@ -34,7 +34,7 @@ public class viewRecipes{
             System.out.println("Title: " + title);
             System.out.println("Image: " + imageUrl);
             System.out.println("Image Type: " + imageType);
-            System.out.println("ID: " + id);
+            System.out.println("ID Number: " + id);
         }else if(optionNum == 0){
             System.out.println("Returning...");
         }else{
