@@ -81,7 +81,7 @@ public class HomePage {
                     System.out.println("Exiting...");
                     return; // Exit the application
                 default:
-                    System.out.println("Invalid choice, please enter a number between 1 and 9.");
+                    System.out.println("Invalid choice, please enter a number between 1 and 10.");
             }
         }
     }
