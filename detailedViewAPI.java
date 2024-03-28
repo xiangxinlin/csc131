@@ -1,19 +1,15 @@
+//currently displays title, summary, ingredients when searched
+//need to include procedure
+
 package com.example;
 
-//import java.io.BufferedReader;
 import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.net.HttpURLConnection;
 import java.net.URI;
-//import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
-//import java.util.List;
-//import org.bson.Document;
 
-//class currently responsible for interacting with the API to search for recipes
 public class detailedViewAPI {
 	private static final String API_KEY = "42c073de1b0e477089808c29c9c27139"; // API Key included as requested
 
@@ -35,14 +31,14 @@ public class detailedViewAPI {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String responseBody = response.body();
-            printRecipeTitles(responseBody);
+            printRecipeDetails(responseBody);
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while requesting recipes: " + e.getMessage());
         }
     }
         
 
-    private static void printRecipeTitles(String jsonData) {
+    private static void printRecipeDetails(String jsonData) {
         System.out.println("\nRecipe Details:");
         System.out.println("\nTitle: ");
         String[] parts = jsonData.split("\"title\":\"");
