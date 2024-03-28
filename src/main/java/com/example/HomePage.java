@@ -9,7 +9,7 @@ public class HomePage {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nWelcome to the Recipe Management System");
         while (true) {
-            System.out.println("\nProceed with your Commands: ");
+            System.out.println("\n\nProceed with your Commands: ");
             System.out.println("1. Search by Title");
             System.out.println("2. Search by ID"); 
             System.out.println("3. Search by Ingredients");
@@ -18,7 +18,8 @@ public class HomePage {
             System.out.println("6. Update a Recipe");
             System.out.println("7. Delete a Recipe");
             System.out.println("8. Create a Recipe");
-            System.out.println("9. View a Recipe");
+            System.out.println("9. View a Saved Recipe");
+            System.out.println("10. Search Detailed Recipe (requires recipe id)");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
@@ -67,9 +68,14 @@ public class HomePage {
                     RecipeCreator.create();
                     break;
                 case 9:
-                    System.out.println("\nViewing a Recipe");
+                    System.out.println("\nViewing a Recipe...");
                     viewRecipes ViewRecipes = new viewRecipes();
                     ViewRecipes.recipeView();
+                    break;
+                case 10:
+                    System.out.println("\nViewing Recipe Details...");
+                    detailedViewAPI DetailedViewAPI = new detailedViewAPI();
+                    DetailedViewAPI.viewAPIDetails();
                     break;
                 case 0:
                     System.out.println("Exiting...");
