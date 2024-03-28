@@ -19,7 +19,7 @@ public class HomePage {
             System.out.println("7. Delete a Recipe");
             System.out.println("8. Create a Recipe");
             System.out.println("9. View a Saved Recipe");
-            System.out.println("10. Search Detailed Recipe (requires recipe id)");
+            System.out.println("10. Search Detailed Recipe by ID");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
