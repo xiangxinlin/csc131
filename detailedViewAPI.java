@@ -1,5 +1,5 @@
 //currently displays title, summary, ingredients when searched
-//need to include procedure
+//need to include instructions
 
 package com.example;
 
