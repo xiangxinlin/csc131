@@ -11,29 +11,36 @@ import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 public class detailedViewAPI {
-	private static final String API_KEY = "42c073de1b0e477089808c29c9c27139"; // API Key included as requested
+    private static final String API_KEY = "42c073de1b0e477089808c29c9c27139"; // API Key included as requested
 
     public void viewAPIDetails() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter recipe id:");
+        System.out.println("Enter recipe ID:");
         String id = scanner.nextLine().trim();
 
-        String requestURL = String.format(
-                "https://api.spoonacular.com/recipes/" + id + "/information?apiKey=%s&includeNutrition=false&number=10",
-                API_KEY, id);
-        
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(requestURL))
-                .GET()
-                .build();
-
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
-            printRecipeDetails(responseBody);
-        } catch (IOException | InterruptedException e) {
-            System.err.println("An error occurred while requesting recipes: " + e.getMessage());
+            int recipeId = Integer.parseInt(id);
+            String requestURL = String.format(
+                    "https://api.spoonacular.com/recipes/" + id
+                            + "/information?apiKey=%s&includeNutrition=false&number=10",
+                    API_KEY, id);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(requestURL))
+                    .GET()
+                    .build();
+
+            try {
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                String responseBody = response.body();
+                printRecipeDetails(responseBody);
+            } catch (IOException | InterruptedException e) {
+                System.err.println("An error occurred while requesting recipes: " + e.getMessage());
+            }
+        } catch (NumberFormatException e) {
+            // If the input is not a valid integer, print an error message and return
+            System.err.println("The recipe ID must be a numerical value. Please try again.");
         }
     }
         
