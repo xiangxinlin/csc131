@@ -42,9 +42,11 @@ public class searchByTitle {
 
                 //Extract recipe info from API response
                 String jsonResponse = infoString.toString();
+                if (jsonResponse.contains("\"results\":[]")) {
+                    System.out.println("No recipes found matching your query.");
+                }
                 String[] recipes = jsonResponse.split("\"results\":\\[")[1].split("\\],\"offset\"")[0].split("\\},\\{");
-
-                //Display found recipes to user
+                // Display found recipes to user
                 System.out.println("Recipes found:");
                 int recipeNumber = 1;
                 for (String recipe : recipes) {
