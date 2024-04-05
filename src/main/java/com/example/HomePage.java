@@ -2,6 +2,7 @@
 package com.example;
 
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class HomePage {
 
@@ -23,65 +24,71 @@ public class HomePage {
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
-
-            switch (choice) {
-                case 1:
-                    System.out.println("\nSearching by Title...");
-                    searchByTitle SearchByTitle = new searchByTitle();
-                    SearchByTitle.searchTitle();
-                    break;
-                case 2:
-                    System.out.println("\nSearching by ID...");
-                    searchByID SearchByID = new searchByID();
-                    SearchByID.searchID();
-                    break;
-                case 3:
-                    System.out.println("\nSearching by Ingredients...");
-                    searchByIngredients SearchByIngredients = new searchByIngredients();
-                    SearchByIngredients.searchIngredients();
-                    break;
-                case 4:
-                    System.out.println("\nSearching by Cuisine...");
-                    searchByCuisine SearchByCuisine =  new searchByCuisine();
-                    SearchByCuisine.searchCuisine();
-                    break;
-                case 5:
-                    System.out.println("\nSearching by Diet...");
-                    searchByDiet SearchByDiet = new searchByDiet();
-                    SearchByDiet.searchDiet();
-                    break;
-                case 6:
-                    System.out.println("\nUpdating a Recipe...");
-                    updateRecipe UpdateRecipe = new updateRecipe();
-                    UpdateRecipe.update();
-                    break;
-                case 7:
-                    System.out.println("\nDeleting a Recipe...");
-                    deleteRecipe DeleteRecipe = new deleteRecipe();
-                    DeleteRecipe.delete();
-                    break;
-                case 8:
-                    System.out.println("\nCreating a Recipe...");
-                    recipeCreator RecipeCreator = new recipeCreator();
-                    RecipeCreator.create();
-                    break;
-                case 9:
-                    System.out.println("\nViewing a Recipe...");
-                    viewRecipes ViewRecipes = new viewRecipes();
-                    ViewRecipes.recipeView();
-                    break;
-                case 10:
-                    System.out.println("\nViewing Recipe Details...");
-                    detailedViewAPI DetailedViewAPI = new detailedViewAPI();
-                    DetailedViewAPI.viewAPIDetails();
-                    break;
-                case 0:
-                    System.out.println("Exiting...");
-                    return; // Exit the application
-                default:
-                    System.out.println("Invalid choice, please enter a number between 1 and 10.");
+            try{
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline left-over
+                switch (choice) {
+                    case 1:
+                        System.out.println("\nSearching by Title...");
+                        searchByTitle SearchByTitle = new searchByTitle();
+                        SearchByTitle.searchTitle();
+                        break;
+                    case 2:
+                        System.out.println("\nSearching by ID...");
+                        searchByID SearchByID = new searchByID();
+                        SearchByID.searchID();
+                        break;
+                    case 3:
+                        System.out.println("\nSearching by Ingredients...");
+                        searchByIngredients SearchByIngredients = new searchByIngredients();
+                        SearchByIngredients.searchIngredients();
+                        break;
+                    case 4:
+                        System.out.println("\nSearching by Cuisine...");
+                        searchByCuisine SearchByCuisine =  new searchByCuisine();
+                        SearchByCuisine.searchCuisine();
+                        break;
+                    case 5:
+                        System.out.println("\nSearching by Diet...");
+                        searchByDiet SearchByDiet = new searchByDiet();
+                        SearchByDiet.searchDiet();
+                        break;
+                    case 6:
+                        System.out.println("\nUpdating a Recipe...");
+                        updateRecipe UpdateRecipe = new updateRecipe();
+                        UpdateRecipe.update();
+                        break;
+                    case 7:
+                        System.out.println("\nDeleting a Recipe...");
+                        deleteRecipe DeleteRecipe = new deleteRecipe();
+                        DeleteRecipe.delete();
+                        break;
+                    case 8:
+                        System.out.println("\nCreating a Recipe...");
+                        recipeCreator RecipeCreator = new recipeCreator();
+                        RecipeCreator.create();
+                        break;
+                    case 9:
+                        System.out.println("\nViewing a Recipe...");
+                        viewRecipes ViewRecipes = new viewRecipes();
+                        ViewRecipes.recipeView();
+                        break;
+                    case 10:
+                        System.out.println("\nViewing Recipe Details...");
+                        detailedViewAPI DetailedViewAPI = new detailedViewAPI();
+                        DetailedViewAPI.viewAPIDetails();
+                        break;
+                    case 0:
+                        System.out.println("Exiting...");
+                        return; // Exit the application
+                    default:
+                        System.out.println("Invalid choice, please enter a number between 1 and 10.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input, please enter a numerical value.");
+                scanner.nextLine(); // Consume the invalid input and prompt again.
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
     }
