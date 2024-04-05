@@ -24,7 +24,7 @@ public class updateRecipe {
 
             updateDocument(title, field, value);
         }catch(Exception e){
-
+            System.err.println("An error occured while updating a Recipe.");
         }
     }
 
@@ -53,7 +53,6 @@ public class updateRecipe {
                 System.out.println("No matching recipe found to update.");
             }
         } catch (Exception e) {
-            // Handle any exceptions that occur during the update process
             System.err.println("An error occurred while updating the recipe: " + e.getMessage());
         }
     }
