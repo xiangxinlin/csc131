@@ -20,7 +20,7 @@ public class deleteRecipe {
 
             deleteDocument(title);
         }catch(Exception e){
-
+            System.err.println("An error occurred while deleting the recipe: " + e.getMessage());
         }
     }
 
