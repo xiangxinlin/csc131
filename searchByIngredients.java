@@ -37,11 +37,15 @@ public class searchByIngredients {
 
     private static void printRecipeTitles(String jsonData) {
         System.out.println("List of Recipes:");
-        String[] parts = jsonData.split("\"title\":\"");
-        int count = 1;
-        for (int i = 1; i < parts.length; i++) {
-            String title = parts[i].split("\"", 2)[0];
-            System.out.println(count++ + ". " + title);
+        if (jsonData.contains("\"id\":")) {
+            String[] parts = jsonData.split("\"title\":\"");
+            int count = 1;
+            for (int i = 1; i < parts.length; i++) {
+                String title = parts[i].split("\"", 2)[0];
+                System.out.println(count++ + ". " + title);
+            }
+        } else {
+            System.out.println("No recipes found with the given ingredients.");
         }
     }
 }
