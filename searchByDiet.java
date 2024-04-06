@@ -6,17 +6,29 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.List;
 
 public class searchByDiet {
 
     private static final String API_KEY = "42c073de1b0e477089808c29c9c27139"; // API Key included as requested
-
+    private static final List<String> supportedDiets = Arrays.asList(
+            "gluten-free", "ketogenic", "vegetarian", "lacto-vegetarian", 
+            "ovo-vegetarian", "vegan", "pescetarian", "paleo", 
+            "primal", "low-fodmap", "whole30");
+    
     public void searchDiet() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Here is a list of supported diets: Gluten-Free, Ketogenic, Vegetarian, Lacto-Vegetarian, Ovo-Vegetarian, Vegan, Pescetarian, Paleo, Primal, Low-FODMAP, Whole30.");
         System.out.println("Enter your diet:");
-        String diet = scanner.nextLine().trim();
+        String diet = scanner.nextLine().toLowerCase();
 
+        //check user input
+        if (!supportedDiets.contains(diet)) {
+            System.out.println("The entered diet is not supported.");
+            return; // Exit the method if diet is not supported
+        }
+        
         String requestURL = String.format(
                 "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&diet=%s&addRecipeInformation=true&number=10",
                 API_KEY, diet);
