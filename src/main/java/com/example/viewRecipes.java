@@ -27,14 +27,23 @@ public class viewRecipes{
         if(optionNum >= 1 && optionNum <= savedRecipes.size()){
             Document recipeDetails = savedRecipes.get(optionNum - 1);
             String title = recipeDetails.getString("title");
+            int id = recipeDetails.getInteger("id");
             String imageUrl = recipeDetails.getString("image");
             String imageType = recipeDetails.getString("imageType");
-            int id = recipeDetails.getInteger("id");
+            String nutrition = recipeDetails.getString("nutrition");
+            double ratings = recipeDetails.getDouble("ratings");
+            String ingredients = recipeDetails.getString("ingredients");
+            String steps = recipeDetails.getString("steps");
 
             System.out.println("Title: " + title);
+            System.out.println("ID Number: " + id);
             System.out.println("Image: " + imageUrl);
             System.out.println("Image Type: " + imageType);
-            System.out.println("ID Number: " + id);
+            System.out.println("Nutrients: " + nutrition);
+            System.out.println("Ratings: " + ratings);
+            System.out.println("Ingredients: " + ingredients);
+            System.out.println("Steps: " + steps);
+
         }else if(optionNum == 0){
             System.out.println("Returning...");
         }else{
