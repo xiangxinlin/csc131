@@ -33,16 +33,18 @@ public class viewRecipes{
             String nutrition = recipeDetails.getString("nutrition");
             double ratings = recipeDetails.getDouble("ratings");
             String ingredients = recipeDetails.getString("ingredients");
-            String steps = recipeDetails.getString("steps");
+            String instructions = recipeDetails.getString("instructions");
+            String summary = recipeDetails.getString("summary");
 
             System.out.println("Title: " + title);
             System.out.println("ID Number: " + id);
             System.out.println("Image: " + imageUrl);
             System.out.println("Image Type: " + imageType);
-            System.out.println("Nutrients: " + nutrition);
+            System.out.println("Nutrition: " + nutrition);
             System.out.println("Ratings: " + ratings);
             System.out.println("Ingredients: " + ingredients);
-            System.out.println("Steps: " + steps);
+            System.out.println("Instructions: " + instructions);
+            System.out.println("Summary: " + summary);
 
         }else if(optionNum == 0){
             System.out.println("Returning...");
