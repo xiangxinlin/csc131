@@ -6,7 +6,7 @@ import org.bson.Document;
 
 public class viewRecipes{
     Scanner scanner = new Scanner(System.in);
-    public void recipeView(){
+    public void recipeDetails(){
         recipeSaver recipeSaver = new recipeSaver();
         List<Document> savedRecipes = recipeSaver.getSavedRecipes();
         if (!savedRecipes.isEmpty()) {
@@ -14,8 +14,7 @@ public class viewRecipes{
             int index = 1;
             for (Document savedRecipe : savedRecipes) {
                 String savedTitle = savedRecipe.getString("title");
-                String savedImageUrl = savedRecipe.getString("image");
-                System.out.println(index + ": " + savedTitle + " - " + savedImageUrl);
+                System.out.println(index + ": " + savedTitle);
                 index ++;
             }
         } else {
@@ -35,6 +34,7 @@ public class viewRecipes{
             String ingredients = recipeDetails.getString("ingredients");
             String instructions = recipeDetails.getString("instructions");
             String summary = recipeDetails.getString("summary");
+            String diet = recipeDetails.getString("diet");
 
             System.out.println("Title: " + title);
             System.out.println("ID Number: " + id);
@@ -45,6 +45,7 @@ public class viewRecipes{
             System.out.println("Ingredients: " + ingredients);
             System.out.println("Instructions: " + instructions);
             System.out.println("Summary: " + summary);
+            System.out.println("Diet: " + diet);
 
         }else if(optionNum == 0){
             System.out.println("Returning...");

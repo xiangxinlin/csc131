@@ -21,6 +21,7 @@ public class HomePage {
             System.out.println("8. Create a Recipe");
             System.out.println("9. View a Saved Recipe");
             System.out.println("10. Search Detailed Recipe by ID");
+            System.out.println("11. View Recipes of a Specific Cuisine Locally");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
@@ -71,13 +72,17 @@ public class HomePage {
                     case 9:
                         System.out.println("\nViewing a Recipe...");
                         viewRecipes ViewRecipes = new viewRecipes();
-                        ViewRecipes.recipeView();
+                        ViewRecipes.recipeDetails();
                         break;
                     case 10:
                         System.out.println("\nViewing Recipe Details...");
                         detailedViewAPI DetailedViewAPI = new detailedViewAPI();
                         DetailedViewAPI.viewAPIDetails();
                         break;
+                    case 11:
+                        System.out.println("\nViewing Saved Recipes of Chosen Cuisine...");
+                        orderByCuisine OrderByCuisine = new orderByCuisine();
+                        OrderByCuisine.viewRecipesByCuisine();
                     case 0:
                         System.out.println("Exiting...");
                         return; // Exit the application
