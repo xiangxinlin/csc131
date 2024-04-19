@@ -83,6 +83,7 @@ public class HomePage {
                         System.out.println("\nViewing Saved Recipes of Chosen Cuisine...");
                         orderByCuisine OrderByCuisine = new orderByCuisine();
                         OrderByCuisine.viewRecipesByCuisine();
+                        break;
                     case 0:
                         System.out.println("Exiting...");
                         return; // Exit the application
