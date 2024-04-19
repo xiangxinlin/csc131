@@ -8,21 +8,36 @@ public class HomePage {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nWelcome to the Recipe Management System");
+        System.out.println("\n   Welcome to the Recipe Management System");
+        System.err.println("   ***************************************");
+
         while (true) {
-            System.out.println("\n\nProceed with your Commands: ");
+            System.out.println("\n          Proceed with your Commands: ");
+            System.err.println("-------------------------------------------------");
             System.out.println("1. Search by Title");
+            System.err.println("-------------------------------------------------");
             System.out.println("2. Search by ID"); 
+            System.err.println("-------------------------------------------------");
             System.out.println("3. Search by Ingredients");
+            System.err.println("-------------------------------------------------");
             System.out.println("4. Search by Cuisine");
+            System.err.println("-------------------------------------------------");
             System.out.println("5. Search by Diet");
+            System.err.println("-------------------------------------------------");
             System.out.println("6. Update a Recipe");
+            System.err.println("-------------------------------------------------");
             System.out.println("7. Delete a Recipe");
+            System.err.println("-------------------------------------------------");
             System.out.println("8. Create a Recipe");
+            System.err.println("-------------------------------------------------");
             System.out.println("9. View a Saved Recipe");
+            System.err.println("-------------------------------------------------");
             System.out.println("10. Search Detailed Recipe by ID");
+            System.err.println("-------------------------------------------------");
             System.out.println("11. View Recipes of a Specific Cuisine Locally");
+            System.err.println("-------------------------------------------------");
             System.out.println("0. Exit");
+            System.err.println("-------------------------------------------------");
             System.out.print("Enter your choice: ");
 
             try{
@@ -88,7 +103,7 @@ public class HomePage {
                         System.out.println("Exiting...");
                         return; // Exit the application
                     default:
-                        System.out.println("Invalid choice, please enter a number between 1 and 10.");
+                        System.out.println("Invalid choice, please enter a number between 0 and 11.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input, please enter a numerical value.");
