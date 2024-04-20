@@ -32,9 +32,9 @@ public class searchByTitle {
                 StringBuilder infoString = new StringBuilder();
                 BufferedReader read = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-                String line;
-                while ((line = read.readLine()) != null) {
-                    infoString.append(line);
+                String data;
+                while ((data = read.readLine()) != null) {
+                    infoString.append(data);
                 }
                 read.close();
 
