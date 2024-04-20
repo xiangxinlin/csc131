@@ -5,8 +5,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
-import java.util.List;
-import org.bson.Document;
 
 //class currently responsible for interacting with the API to search for recipes
 public class searchByTitle {

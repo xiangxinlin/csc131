@@ -26,7 +26,7 @@ public class recipeInteraction {
                     String image = selectedRecipe.split("\"image\":\"")[1].split("\",\"")[0];
                     String id = selectedRecipe.split("\"id\":")[1].split(",")[0];
                     String imageType = selectedRecipe.split("\"imageType\":\"")[1].split("\",\"")[0];
-
+                    //added servings as a test save option
                     String servings = selectedRecipe.split("\"servings\":\"")[1].split("\",\"")[0];
 
                     // Save the selected recipe
