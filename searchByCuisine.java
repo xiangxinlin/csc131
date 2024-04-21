@@ -8,6 +8,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import org.bson.Document;
 
 public class searchByCuisine{
 
@@ -31,42 +32,19 @@ public class searchByCuisine{
                 .build();
 
         try {
-            // Send the request and handle the response
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String jsonResponse = response.body();
 
-            // "Parse" the response to extract recipe titles and image URLs
-            List<String[]> recipes = extractRecipes(response.body());
-
-            // Display the extracted titles and image URLs with numbering
-            System.out.println("Recipes found:");
-            for (int i = 0; i < recipes.size(); i++) {
-                String[] recipe = recipes.get(i);
-                System.out.printf("%d. %s - %s%n", i + 1, recipe[0], recipe[1]); // Title - Image URL
+            if (jsonResponse != null) {
+                List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
+                if (!recipes.isEmpty()) {
+                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                } else {
+                    System.out.println("No recipes found matching your query.");
+                }
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while requesting recipes: " + e.getMessage());
         }
     }
-
-    private static List<String[]> extractRecipes(String responseBody) {
-        List<String[]> recipes = new ArrayList<>();
-        String[] parts = responseBody.split("\\},\\{");
-        for (String part : parts) {
-            String title = extractValue(part, "title");
-            String image = extractValue(part, "image");
-            recipes.add(new String[]{title, image});
-        }
-        return recipes;
-    }
-
-    private static String extractValue(String data, String key) {
-        String keyPattern = "\"" + key + "\":\"";
-        int start = data.indexOf(keyPattern) + keyPattern.length();
-        int end = data.indexOf("\"", start);
-        if (start > keyPattern.length() - 1 && end > -1) {
-            return data.substring(start, end);
-        }
-        return "Not found";
-    }
 }
-
