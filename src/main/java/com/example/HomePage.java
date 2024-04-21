@@ -12,7 +12,7 @@ public class HomePage {
         System.out.println("   ***************************************");
 
         while (true) {
-            System.out.println("\n          Proceed with your Commands: ");
+            System.out.println("\n\n        Proceed with your Commands: ");
             System.out.println("-------------------------------------------------");
             System.out.println("1. Search by Title");
             System.out.println("-------------------------------------------------");
