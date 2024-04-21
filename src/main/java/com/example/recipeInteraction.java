@@ -1,8 +1,8 @@
 package com.example;
 
-import java.util.List;
 import java.util.Scanner;
 import org.bson.Document;
+import java.util.List;
 
 public class recipeInteraction {
 
@@ -13,49 +13,33 @@ public class recipeInteraction {
         if (!input.equalsIgnoreCase("none")) {
             String[] selectedRecipeNumbers = input.split("\\s+");
             for (String recipeNumberStr : selectedRecipeNumbers) {
-                int selectedRecipeNumber;
                 try {
-                    selectedRecipeNumber = Integer.parseInt(recipeNumberStr);
+                    int recipeNumber = Integer.parseInt(recipeNumberStr) - 1;
+                    if (recipeNumber >= 0 && recipeNumber < recipes.length) {
+                        String[] recipeDetails = recipes[recipeNumber].split(" - ");
+                        int servings = Integer.parseInt(recipeDetails[2].split(" ")[0]); // "4 servings" -> ["4", "servings"]
+                        recipeSaverInstance.saveRecipe(recipeDetails[0], recipeDetails[1], servings);
+                    } else {
+                        System.out.println("Invalid recipe number.");
+                    }
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid input: " + recipeNumberStr + ". Skipping...");
-                    continue;
-                }
-                if (selectedRecipeNumber > 0 && selectedRecipeNumber <= recipes.length) {
-                    String selectedRecipe = recipes[selectedRecipeNumber - 1];
-                    String title = selectedRecipe.split("\"title\":\"")[1].split("\",\"")[0];
-                    String image = selectedRecipe.split("\"image\":\"")[1].split("\",\"")[0];
-                    String id = selectedRecipe.split("\"id\":")[1].split(",")[0];
-                    String imageType = selectedRecipe.split("\"imageType\":\"")[1].split("\",\"")[0];
-                    //added servings as a test save option
-                    String servings = selectedRecipe.split("\"servings\":\"")[1].split("\",\"")[0];
-
-                    // Save the selected recipe
-                    recipeSaverInstance.saveRecipe(Integer.parseInt(id), title, image, imageType, Integer.parseInt(servings), true);
-                    System.out.println("Recipe '" + title + "' saved successfully!");
-                } else {
-                    System.out.println("Invalid recipe number: " + selectedRecipeNumber + ". Skipping...");
+                    System.out.println("Invalid input: " + recipeNumberStr);
                 }
             }
-        } else {
-            System.out.println("No recipe saved.");
         }
 
-        // Ask if the user wants to view their list of saved recipes
-        System.out.println("Do you want to view your list of saved recipes? (yes/no)");
-        String viewListInput = scanner.nextLine();
-        if (viewListInput.equalsIgnoreCase("yes")) {
+        System.out.println("Do you want to view your saved recipes? (yes/no)");
+        if (scanner.nextLine().equalsIgnoreCase("yes")) {
             List<Document> savedRecipes = recipeSaverInstance.getSavedRecipes();
-            if (!savedRecipes.isEmpty()) {
-                System.out.println("Your list of saved recipes:");
-                int index = 1;
-                for (Document savedRecipe : savedRecipes) {
-                    String savedTitle = savedRecipe.getString("title");
-                    String savedImageUrl = savedRecipe.getString("image");
-                    System.out.println(index + ": " + savedTitle + " - " + savedImageUrl);
+            if (savedRecipes.isEmpty()) {
+                System.out.println("No saved recipes found.");
+            } else {
+                System.out.println("Saved Recipes:");
+                int index = 1; 
+                for (Document recipe : savedRecipes) {
+                    System.out.println(index + ": " + recipe.getString("title") + " - " + recipe.getString("image") + " - " + recipe.getInteger("servings") + " servings");
                     index++;
                 }
-            } else {
-                System.out.println("No saved recipes found.");
             }
         }
     }
