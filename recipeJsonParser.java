@@ -10,14 +10,27 @@ import java.util.List;
 public class recipeJsonParser {
     public static List<String> parseRecipes(String jsonResponse) {
         JsonElement jelement = JsonParser.parseString(jsonResponse);
-        JsonObject jobject = jelement.getAsJsonObject();
-        JsonArray results = jobject.getAsJsonArray("results");
         List<String> recipes = new ArrayList<>();
+        
+        // Determine if the response is an object or an array and process accordingly
+        if (jelement.isJsonObject()) {
+            JsonObject jobject = jelement.getAsJsonObject();
+            JsonArray results = jobject.getAsJsonArray("results");  // Used if the response is an object containing an array
+            processJsonArray(recipes, results);
+        } else if (jelement.isJsonArray()) {
+            JsonArray jsonArray = jelement.getAsJsonArray();
+            processJsonArray(recipes, jsonArray);
+        } else {
+            System.out.println("No recipes found matching your query.");
+        }
+        return recipes;
+    }
 
-        if (results != null && results.size() > 0) {
+    private static void processJsonArray(List<String> recipes, JsonArray jsonArray) {
+        if (jsonArray != null && jsonArray.size() > 0) {
             System.out.println("Recipes found:");
             int index = 1;
-            for (JsonElement element : results) {
+            for (JsonElement element : jsonArray) {
                 JsonObject recipe = element.getAsJsonObject();
                 String title = getStringSafe(recipe, "title");
                 String image = getStringSafe(recipe, "image");
@@ -27,9 +40,8 @@ public class recipeJsonParser {
                 index++;
             }
         } else {
-            System.out.println("No recipes found matching your query.");
+            System.out.println("No recipes found.");
         }
-        return recipes;
     }
 
     private static String getStringSafe(JsonObject jsonObject, String key) {
@@ -43,7 +55,11 @@ public class recipeJsonParser {
     private static int getIntSafe(JsonObject jsonObject, String key) {
         JsonElement element = jsonObject.get(key);
         if (element != null && !element.isJsonNull()) {
-            return element.getAsInt();
+            try {
+                return element.getAsInt();
+            } catch (NumberFormatException e) {
+                return 0; // Default value if conversion fails
+            }
         }
         return 0; // Default value if not available
     }
