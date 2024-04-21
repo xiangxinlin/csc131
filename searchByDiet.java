@@ -8,10 +8,11 @@ import java.net.http.HttpResponse;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.List;
+import org.bson.Document;
 
 public class searchByDiet {
 
-    private static final String API_KEY = "42c073de1b0e477089808c29c9c27139"; // API Key included as requested
+    private static final String API_KEY = "42c073de1b0e477089808c29c9c27139";
     private static final List<String> supportedDiets = Arrays.asList(
             "gluten-free", "ketogenic", "vegetarian", "lacto-vegetarian", 
             "ovo-vegetarian", "vegan", "pescetarian", "paleo", 
@@ -41,20 +42,18 @@ public class searchByDiet {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
-            printRecipeTitles(responseBody);
+            String jsonResponse = response.body();
+
+            if (jsonResponse != null) {
+                List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
+                if (!recipes.isEmpty()) {
+                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                } else {
+                    System.out.println("No recipes found matching your query.");
+                }
+            }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while requesting recipes: " + e.getMessage());
-        }
-    }
-
-    private static void printRecipeTitles(String jsonData) {
-        System.out.println("List of Recipes:");
-        String[] parts = jsonData.split("\"title\":\"");
-        int count = 1;
-        for (int i = 1; i < parts.length; i++) {
-            String title = parts[i].split("\"", 2)[0];
-            System.out.println(count++ + ". " + title);
         }
     }
 }
