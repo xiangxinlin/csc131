@@ -26,7 +26,6 @@ public class recipeJsonParser {
         return recipes;
     }
 
-    //Processes a JSON array containing recipe data
     private static void processJsonArray(List<String> recipes, JsonArray jsonArray) {
         if (jsonArray != null && jsonArray.size() > 0) {
             System.out.println("\nRecipes found:");
@@ -37,9 +36,10 @@ public class recipeJsonParser {
                 String title = getStringSafe(recipe, "title");
                 String image = getStringSafe(recipe, "image");
                 int servings = getIntSafe(recipe, "servings");
+                String summary = getStringSafe(recipe, "summary");
                 System.out.println(index + ". " + title + "\n   -" + image + "\n   -" + servings + " servings");
                 System.out.println("------------------------------------------------------------------");
-                recipes.add(title + " - " + image + " - " + servings);
+                recipes.add(title + " - " + image + " - " + servings + " - " + summary);
                 index++;
             }
         } else {
@@ -67,4 +67,6 @@ public class recipeJsonParser {
         return 0; // Default value if not available
     }
 }
+
+
 
