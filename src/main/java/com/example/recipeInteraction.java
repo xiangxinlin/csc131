@@ -7,7 +7,7 @@ import java.util.List;
 public class recipeInteraction {
 
     public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipes, recipeSaver recipeSaverInstance) {
-        System.out.println("Enter the numbers of the recipes you want to save, separated by spaces, or enter 'none' to skip:");
+        System.out.println("\n\nEnter the numbers of the recipes you want to save, separated by spaces, or enter 'none' to skip:");
         String input = scanner.nextLine();
 
         if (!input.equalsIgnoreCase("none")) {
@@ -28,7 +28,7 @@ public class recipeInteraction {
             }
         }
 
-        System.out.println("Do you want to view your saved recipes? (yes/no)");
+        System.out.println("\n\nDo you want to view your saved recipes? (yes/no)");
         if (scanner.nextLine().equalsIgnoreCase("yes")) {
             List<Document> savedRecipes = recipeSaverInstance.getSavedRecipes();
             if (savedRecipes.isEmpty()) {
