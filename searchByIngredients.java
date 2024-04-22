@@ -15,8 +15,9 @@ public class searchByIngredients {
     public void searchIngredients() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter ingredients separated by commas (e.g., tomato,egg):");
-        String ingredients = scanner.nextLine().trim();
-
+        String ingredients = scanner.nextLine().trim().replaceAll("\\s+", "");
+        
+        // Create the request URL with the API key and formatted ingredients.
         String requestURL = String.format(
             "https://api.spoonacular.com/recipes/findByIngredients?apiKey=%s&ingredients=%s",
             API_KEY, ingredients);
@@ -30,13 +31,14 @@ public class searchByIngredients {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String jsonResponse = response.body();
-
+        
+            // Process the JSON response using a custom parser.
             if (jsonResponse != null) {
                 List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
                 if (!recipes.isEmpty()) {
                     recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
                 } else {
-                    System.out.println("No recipes found matching your query.");
+                    System.out.println("Please enter ingredients correctly.");
                 }
             }
         } catch (IOException | InterruptedException e) {
