@@ -20,7 +20,7 @@ public class searchByDiet {
     
     public void searchDiet() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Here is a list of supported diets: Gluten-Free, Ketogenic, Vegetarian, Lacto-Vegetarian, Ovo-Vegetarian, Vegan, Pescetarian, Paleo, Primal, Low-FODMAP, Whole30.");
+        System.out.println("Here is a list of supported diets: Gluten-Free, Ketogenic, Vegetarian, Lacto-Vegetarian,\nOvo-Vegetarian, Vegan, Pescetarian, Paleo, Primal, Low-FODMAP, Whole30.");
         System.out.println("Enter your diet:");
         String diet = scanner.nextLine().toLowerCase();
 
