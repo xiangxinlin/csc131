@@ -26,25 +26,35 @@ public class recipeInteraction {
                         System.out.println("Invalid recipe number.");
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid input: " + recipeNumberStr);
+                    System.out.println("Invalid input.");
                 }
             }
         }
 
-        System.out.println("\n\nDo you want to view your saved recipes? (yes/no)");
-        if (scanner.nextLine().equalsIgnoreCase("yes")) {
-            List<Document> savedRecipes = recipeSaverInstance.getSavedRecipes();
-            if (savedRecipes.isEmpty()) {
-                System.out.println("No saved recipes found.");
-            } else {
-                System.out.println("\nSaved Recipes:");
-                System.out.println("------------------------------------------------------------------");
-                int index = 1; 
-                for (Document recipe : savedRecipes) {
-                    System.out.println(index + ": " + recipe.getString("title") + "\n   -" + recipe.getString("image") + "\n   -" + recipe.getInteger("servings") + " servings");
-                    System.out.println("------------------------------------------------------------------");                    
-                    index++;
+        // Add a loop to handle user input for viewing saved recipes
+        boolean validInputReceived = false;
+        while (!validInputReceived) {
+            System.out.println("\n\nDo you want to view your saved recipes? (yes/no)");
+            String response = scanner.nextLine().trim().toLowerCase();
+            if (response.equals("yes")) {
+                validInputReceived = true;
+                List<Document> savedRecipes = recipeSaverInstance.getSavedRecipes();
+                if (savedRecipes.isEmpty()) {
+                    System.out.println("No saved recipes found.");
+                } else {
+                    System.out.println("\nSaved Recipes:");
+                    System.out.println("------------------------------------------------------------------");
+                    int index = 1;
+                    for (Document recipe : savedRecipes) {
+                        System.out.println(index + ": " + recipe.getString("title") + "\n   -" + recipe.getString("image") + "\n   -" + recipe.getInteger("servings") + " servings");
+                        System.out.println("------------------------------------------------------------------");
+                        index++;
+                    }
                 }
+            } else if (response.equals("no")) {
+                validInputReceived = true;
+            } else {
+                System.out.println("Invalid input, please enter 'yes' or 'no'.");
             }
         }
     }
