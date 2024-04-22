@@ -40,7 +40,7 @@ public class searchByCuisine{
                 if (!recipes.isEmpty()) {
                     recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
                 } else {
-                    System.out.println("No recipes found matching your query.");
+                    System.out.println("Please enter the correct cuisine.");
                 }
             }
         } catch (IOException | InterruptedException e) {
