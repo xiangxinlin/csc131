@@ -34,10 +34,12 @@ public class recipeInteraction {
             if (savedRecipes.isEmpty()) {
                 System.out.println("No saved recipes found.");
             } else {
-                System.out.println("Saved Recipes:");
+                System.out.println("\nSaved Recipes:");
+                System.out.println("------------------------------------------------------------------");
                 int index = 1; 
                 for (Document recipe : savedRecipes) {
-                    System.out.println(index + ": " + recipe.getString("title") + " - " + recipe.getString("image") + " - " + recipe.getInteger("servings") + " servings");
+                    System.out.println(index + ": " + recipe.getString("title") + "\n   -" + recipe.getString("image") + "\n   -" + recipe.getInteger("servings") + " servings");
+                    System.out.println("------------------------------------------------------------------");                    
                     index++;
                 }
             }
