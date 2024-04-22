@@ -28,14 +28,15 @@ public class recipeJsonParser {
 
     private static void processJsonArray(List<String> recipes, JsonArray jsonArray) {
         if (jsonArray != null && jsonArray.size() > 0) {
-            System.out.println("Recipes found:");
+            System.out.println("\nRecipes found:");
+            System.out.println("--------------");
             int index = 1;
             for (JsonElement element : jsonArray) {
                 JsonObject recipe = element.getAsJsonObject();
                 String title = getStringSafe(recipe, "title");
                 String image = getStringSafe(recipe, "image");
                 int servings = getIntSafe(recipe, "servings");
-                System.out.println(index + ". " + title + " - " + image + " - " + servings + " servings");
+                System.out.println(index + ". " + title + "\n   -" + image + "\n   -" + servings + " servings");
                 recipes.add(title + " - " + image + " - " + servings);
                 index++;
             }
