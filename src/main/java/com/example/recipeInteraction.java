@@ -20,8 +20,9 @@ public class recipeInteraction {
                     if (recipeNumber >= 0 && recipeNumber < recipes.length) {
                         String[] recipeDetails = recipes[recipeNumber].split(" - ");
                         int servings = Integer.parseInt(recipeDetails[2].split(" ")[0]); // "4 servings" -> ["4", "servings"]
+                        String summary = cleanHtml(recipeDetails[3]);
                         // Call method to save the recipe in the database.
-                        recipeSaverInstance.saveRecipe(recipeDetails[0], recipeDetails[1], servings);
+                        recipeSaverInstance.saveRecipe(recipeDetails[0], recipeDetails[1], servings, summary);
                     } else {
                         System.out.println("Invalid recipe number.");
                     }
@@ -58,12 +59,9 @@ public class recipeInteraction {
             }
         }
     }
+
+    //method to clean html
+    private static String cleanHtml(String htmlString){
+        return htmlString.replaceAll("<[^>]*>", "");
+    }
 }
-
-
-
-
-
-
-
-
