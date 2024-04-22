@@ -20,9 +20,12 @@ public class recipeInteraction {
                     if (recipeNumber >= 0 && recipeNumber < recipes.length) {
                         String[] recipeDetails = recipes[recipeNumber].split(" - ");
                         int servings = Integer.parseInt(recipeDetails[2].split(" ")[0]); // "4 servings" -> ["4", "servings"]
-                        String summary = cleanHtml(recipeDetails[3]);
+                        int id = Integer.parseInt(recipeDetails[3].split(" ")[0]);
+                        String imageType = (recipeDetails[4].split(" ")[0]);
+                        String summary = cleanHtml(recipeDetails[5]);
+                        float spoonacularScore = Float.parseFloat(recipeDetails[6].split(" ")[0]);
                         // Call method to save the recipe in the database.
-                        recipeSaverInstance.saveRecipe(recipeDetails[0], recipeDetails[1], servings, summary);
+                        recipeSaverInstance.saveRecipe(recipeDetails[0], recipeDetails[1], servings, id, imageType, summary, spoonacularScore);
                     } else {
                         System.out.println("Invalid recipe number.");
                     }
