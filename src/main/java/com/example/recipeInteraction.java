@@ -27,8 +27,10 @@ public class recipeInteraction {
                         String cuisines = (recipeDetails[7]);
                         float spoonacularScore = Float.parseFloat(recipeDetails[8].split(" ")[0]);
                         String dishTypes = (recipeDetails[9]);
+                        String ingredients = (recipeDetails[10]);
+                        String instructions = (recipeDetails[11]);
                         // Call method to save the recipe in the database.
-                        recipeSaverInstance.saveRecipe(recipeDetails[0], recipeDetails[1], servings, id, imageType, summary, diets, cuisines, spoonacularScore, dishTypes);
+                        recipeSaverInstance.saveRecipe(recipeDetails[0], recipeDetails[1], servings, id, imageType, summary, diets, cuisines, spoonacularScore, dishTypes, ingredients, instructions);
                     } else {
                         System.out.println("Invalid recipe number.");
                     }

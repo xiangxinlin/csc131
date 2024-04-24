@@ -43,9 +43,11 @@ public class recipeJsonParser {
                 String cuisines = getArraySafe(recipe, "cuisines");
                 float spoonacularScore = getFloatSafe(recipe, "spoonacularScore");
                 String dishTypes = getArraySafe(recipe, "dishTypes");
+                String ingredients = getIngredients(recipe, "extendedIngredients");
+                String instructions = getInstructions(recipe, "analyzedInstructions");
                 System.out.println(index + ". " + title + "\n   -" + image + "\n   -" + servings + " servings");
                 System.out.println("------------------------------------------------------------------");
-                recipes.add(title + " - " + image + " - " + servings + " - " + id + " - " + imageType + " - " + summary + " - " + diets + " - " + cuisines + " - " + spoonacularScore + " - " + dishTypes);
+                recipes.add(title + " - " + image + " - " + servings + " - " + id + " - " + imageType + " - " + summary + " - " + diets + " - " + cuisines + " - " + spoonacularScore + " - " + dishTypes + " - " + ingredients + " - " + instructions);
                 index++;
             }
         } else {
@@ -79,10 +81,10 @@ public class recipeJsonParser {
             try {
                 return element.getAsFloat();
             } catch (NumberFormatException e) {
-                return 0.0f; // Default value if conversion fails
+                return 0.0f;
             }
         }
-        return 0.0f; // Default value if not available
+        return 0.0f;
     }
 
     private static String getArraySafe(JsonObject jsonObject, String key) {
@@ -99,7 +101,51 @@ public class recipeJsonParser {
         }
         return "Not available";
     }
+
+    private static String getIngredients(JsonObject jsonObject, String key) {
+        if (jsonObject.has(key) && jsonObject.get(key).isJsonArray()) {
+            JsonArray ingredients = jsonObject.getAsJsonArray(key);
+            StringBuilder ingredientList = new StringBuilder();
+            for (JsonElement element : ingredients) {
+                if (element.isJsonObject()) {
+                    JsonObject ingredient = element.getAsJsonObject();
+                    String ingredientInfo = ingredient.has("original") ? ingredient.get("original").getAsString() : "No ingredient information";
+                    ingredientList.append(ingredientInfo).append("; ");
+                }
+            }
+            return ingredientList.toString();
+        } else {
+            return "No ingredients listed or incorrect data format.";
+        }
+    }
+
+    private static String getInstructions(JsonObject jsonObject, String key) {
+        if (jsonObject.has(key) && jsonObject.get(key).isJsonArray()) {
+            JsonArray instructionsArray = jsonObject.getAsJsonArray(key);
+            StringBuilder instructionList = new StringBuilder();
+            int stepNumber = 1;
+
+            // Iterate over each instruction object in the array
+            for (JsonElement instructionElement : instructionsArray) {
+                JsonObject instructionObject = instructionElement.getAsJsonObject();
+
+                // Check if the instruction object contains a "steps" array
+                if (instructionObject.has("steps") && instructionObject.get("steps").isJsonArray()) {
+                    JsonArray stepsArray = instructionObject.getAsJsonArray("steps");
+
+                    // Iterate over each step in the "steps" array
+                    for (JsonElement stepElement : stepsArray) {
+                        JsonObject stepObject = stepElement.getAsJsonObject();
+                        String step = stepObject.get("step").getAsString();
+                        instructionList.append("Step ").append(stepNumber).append(": ").append(step).append("\n");
+                        stepNumber++;
+                    }
+                }
+            }
+
+            return instructionList.toString();
+        } else {
+            return "No instructions listed or incorrect data format.";
+        }
+    }
 }
-
-
-

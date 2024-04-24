@@ -32,13 +32,10 @@ public class viewRecipes{
             String summary = recipeDetails.getString("summary");
             String servings = recipeDetails.getString("servings");
             String spoonacularScore = recipeDetails.getString("spoonacularScore");
-            /*
-            String nutrition = recipeDetails.getString("nutrition");
-            String ingredients = recipeDetails.getString("ingredients");
-            String instructions = recipeDetails.getString("instructions");
             String diets = recipeDetails.getString("diets");
             String cuisine = recipeDetails.getString("cuisine");
-             */
+            String ingredients = recipeDetails.getString("ingredients");
+            String instructions = recipeDetails.getString("instructions");
 
             System.out.println("Title: " + title);
             System.out.println("Image: " + image);
@@ -47,13 +44,10 @@ public class viewRecipes{
             System.out.println("Summary: " + summary);
             System.out.println("Servings: " + servings);
             System.out.println("Rating: " + spoonacularScore);
-            /*
-            System.out.println("Nutrition: " + nutrition);
-            System.out.println("Ingredients: " + ingredients);
-            System.out.println("Instructions: " + instructions);
             System.out.println("Diet(s): " + diets);
             System.out.println("Cuisine(s): " + cuisine);
-             */
+            System.out.println("Ingredients: " + ingredients);
+            System.out.println("Instructions: " + instructions);
 
         }else if(optionNum == 0){
             System.out.println("Returning...");

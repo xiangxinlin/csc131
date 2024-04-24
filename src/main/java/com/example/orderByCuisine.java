@@ -8,7 +8,6 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
-import static com.mongodb.client.model.Filters.eq;
 
 public class orderByCuisine {
     private static final String MONGODB_URI = "mongodb+srv://nick:csus@csc131.tct5wqu.mongodb.net/";
@@ -19,12 +18,21 @@ public class orderByCuisine {
         try (MongoClient mongoClient = MongoClients.create(MONGODB_URI)) {
             MongoCollection<Document> collection = mongoClient.getDatabase("recipeProject").getCollection("spoonacularRecipes");
 
-            // Query the collection to find recipes with the specified cuisine type
-            FindIterable<Document> result = collection.find(eq("cuisine", cuisineType));
+            cuisineType = cuisineType.toLowerCase();
+            FindIterable<Document> result = collection.find();
 
-            // Iterate the results found and add recipe names to the list
             for (Document recipe : result) {
-                recipeNames.add(recipe.getString("title"));
+                String cuisines = recipe.getString("cuisines");
+                if (cuisines != null) {
+                    String[] cuisineArray = cuisines.split(", ");
+                    for (String cuisine : cuisineArray) {
+                        if (cuisine.toLowerCase().contains(cuisineType)) {
+                            recipeNames.add(recipe.getString("title"));
+
+                            break;
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             System.err.println("Error retrieving recipe names of that cuisine: " + e.getMessage());
