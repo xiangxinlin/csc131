@@ -39,10 +39,13 @@ public class recipeJsonParser {
                 int id = getIntSafe(recipe, "id");
                 String imageType = getStringSafe(recipe, "imageType");
                 String summary = getStringSafe(recipe, "summary");
+                String diets = getArraySafe(recipe, "diets");
+                String cuisines = getArraySafe(recipe, "cuisines");
                 float spoonacularScore = getFloatSafe(recipe, "spoonacularScore");
+                String dishTypes = getArraySafe(recipe, "dishTypes");
                 System.out.println(index + ". " + title + "\n   -" + image + "\n   -" + servings + " servings");
                 System.out.println("------------------------------------------------------------------");
-                recipes.add(title + " - " + image + " - " + servings + " - " + id + " - " + imageType + " - " + summary + " - " + spoonacularScore);
+                recipes.add(title + " - " + image + " - " + servings + " - " + id + " - " + imageType + " - " + summary + " - " + diets + " - " + cuisines + " - " + spoonacularScore + " - " + dishTypes);
                 index++;
             }
         } else {
@@ -80,6 +83,21 @@ public class recipeJsonParser {
             }
         }
         return 0.0f; // Default value if not available
+    }
+
+    private static String getArraySafe(JsonObject jsonObject, String key) {
+        JsonElement element = jsonObject.get(key);
+        if (element != null && element.isJsonArray()) {
+            JsonArray jsonArray = element.getAsJsonArray();
+            StringBuilder result = new StringBuilder();
+            for (JsonElement je : jsonArray) {
+                result.append(je.getAsString()).append(", ");
+            }
+            if(!result.isEmpty()){
+                return result.substring(0, result.length() - 2);
+            }
+        }
+        return "Not available";
     }
 }
 
