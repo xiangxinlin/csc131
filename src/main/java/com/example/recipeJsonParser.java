@@ -116,7 +116,7 @@ public class recipeJsonParser {
             }
             return ingredientList.toString();
         } else {
-            return "No ingredients listed or incorrect data format.";
+            return "No ingredients listed";
         }
     }
 
