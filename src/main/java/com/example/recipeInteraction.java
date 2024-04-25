@@ -30,9 +30,10 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
                     String dishTypes = recipeDetails.length > 9 ? recipeDetails[9] : "No dish types";
                     String ingredients = recipeDetails.length > 10 ? recipeDetails[10] : "No ingredients";
                     String instructions = recipeDetails.length > 11 ? recipeDetails[11] : "No instructions";
+                    int readyInMinutes = recipeDetails.length > 12 ? Integer.parseInt(recipeDetails[12]) : 0;
 
                     // Call method to save the recipe in the database
-                    recipeSaverInstance.saveRecipe(title, image, servings, id, imageType, summary, diets, cuisines, spoonacularScore, dishTypes, ingredients, instructions);
+                    recipeSaverInstance.saveRecipe(title, image, servings, id, imageType, summary, diets, cuisines, spoonacularScore, dishTypes, ingredients, instructions, readyInMinutes);
                 } else {
                     System.out.println("Invalid recipe number.");
                 }
