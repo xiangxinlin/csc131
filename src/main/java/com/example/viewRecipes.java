@@ -12,11 +12,15 @@ public class viewRecipes {
         List<Document> savedRecipes = recipeSaver.getSavedRecipes();
 
         if (!savedRecipes.isEmpty()) {
-            System.out.println("Your list of saved recipes:");
+            System.out.println("\n\nYour list of saved recipes:");
             int index = 1;
             for (Document savedRecipe : savedRecipes) {
-                String savedTitle = savedRecipe.getString("title");
-                System.out.println(index + ": " + savedTitle);
+                System.out.println(index + ": " + safeGetString(savedRecipe, "title", "No title available"));
+                System.out.println("   - ID: " + safeGetString(savedRecipe, "id", "No ID available"));
+                System.out.println("   - Cuisine(s): " + safeGetString(savedRecipe, "cuisines", "Not available"));
+                System.out.println("   - Diet(s): " + safeGetString(savedRecipe, "diets", "Not available"));
+                System.out.println("   - Dish Type(s): " + safeGetString(savedRecipe, "dishTypes", "Not available"));
+                System.out.println("------------------------------------------------------------------");
                 index++;
             }
         } else {
@@ -24,54 +28,73 @@ public class viewRecipes {
             return;
         }
 
-        System.out.println("Enter the number of a recipe for detailed view (or '0' to go back):");
+        System.out.println("\nEnter the number of a recipe for detailed view (or '0' to go back):");
         int optionNum;
         try {
             optionNum = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
         } catch (Exception e) {
             System.out.println("ERROR: Invalid input. Please enter a valid number.");
+            scanner.next(); // Clear scanner wrong input
             return;
         }
 
         if (optionNum >= 1 && optionNum <= savedRecipes.size()) {
             Document recipeDetails = savedRecipes.get(optionNum - 1);
-
-            // Check if all required fields are present
-            if (recipeDetails.containsKey("title") && recipeDetails.containsKey("image") && recipeDetails.containsKey("id")
-                    && recipeDetails.containsKey("imageType") && recipeDetails.containsKey("summary") && recipeDetails.containsKey("servings")
-                    && recipeDetails.containsKey("spoonacularScore") && recipeDetails.containsKey("diets") && recipeDetails.containsKey("cuisines")
-                    && recipeDetails.containsKey("ingredients") && recipeDetails.containsKey("instructions")) {
-
-                String title = recipeDetails.getString("title");
-                String image = recipeDetails.getString("image");
-                int id = recipeDetails.getInteger("id");
-                String imageType = recipeDetails.getString("imageType");
-                String summary = recipeDetails.getString("summary");
-                String servings = recipeDetails.getString("servings");
-                float spoonacularScore = Float.parseFloat(recipeDetails.getString("spoonacularScore"));
-                String diets = recipeDetails.getString("diets");
-                String cuisines = recipeDetails.getString("cuisines");
-                String ingredients = recipeDetails.getString("ingredients");
-                String instructions = recipeDetails.getString("instructions");
-
-                System.out.println("Title: " + title);
-                System.out.println("Image: " + image);
-                System.out.println("ID Number: " + id);
-                System.out.println("Image Type: " + imageType);
-                System.out.println("Summary: " + summary);
-                System.out.println("Servings: " + servings);
-                System.out.println("Rating: " + spoonacularScore);
-                System.out.println("Diet(s): " + diets);
-                System.out.println("Cuisine(s): " + cuisines);
-                System.out.println("Ingredients: " + ingredients);
-                System.out.println("Instructions: " + instructions);
-            } else {
-                System.out.println("ERROR: Required fields are missing in the saved recipe document.");
-            }
+            displayDetails(recipeDetails);
         } else if (optionNum == 0) {
             System.out.println("Returning...");
         } else {
             System.out.println("ERROR: Invalid choice selected");
         }
     }
-}
+
+    private void displayDetails(Document recipeDetails) {
+        System.out.println("\nTitle: " + safeGetString(recipeDetails, "title", "No title available"));
+        System.out.println("\nImage: " + safeGetString(recipeDetails, "image", "No image available"));
+        System.out.println("\nID Number: " + safeGetString(recipeDetails, "id", "0"));
+        System.out.println("\nSummary: " + safeGetString(recipeDetails, "summary", "No summary available"));
+        System.out.println("\nServings: " + safeGetString(recipeDetails, "servings", "No servings information"));
+        System.out.println("\nRating: " + safeGetDouble(recipeDetails, "spoonacularScore", 0.0));
+        System.out.println("\nDiet(s): " + safeGetString(recipeDetails, "diets", "Not available"));
+        System.out.println("\nCuisine(s): " + safeGetString(recipeDetails, "cuisines", "Not available"));
+        System.out.println("\nIngredients: \n" + formatListItems(safeGetString(recipeDetails, "ingredients", "No ingredients listed")));
+        System.out.println("\nInstructions: \n" + formatInstructions(safeGetString(recipeDetails, "instructions", "No instructions provided")));
+    }
+
+    private String safeGetString(Document document, String key, String defaultValue) {
+        Object value = document.get(key);
+        return value != null ? value.toString() : defaultValue;
+    }
+
+    private double safeGetDouble(Document document, String key, double defaultValue) {
+        Object value = document.get(key);
+        if (value != null && value instanceof Number) {
+            return ((Number) value).doubleValue();
+        }
+        return defaultValue;
+    }
+
+    private String formatListItems(String text) {
+        String[] items = text.split("; ");
+        StringBuilder formatted = new StringBuilder();
+        for (String item : items) {
+            formatted.append("- ").append(item).append("\n");
+        }
+        return formatted.toString();
+    }
+
+    private String formatInstructions(String instructions) {
+        String[] lines = instructions.split("\n");  // Split instructions into lines assuming each step is on a new line.
+        StringBuilder formatted = new StringBuilder();
+        for (String line : lines) {
+            if (line.trim().startsWith("Step")) {  // Check if the line starts with "Step"
+                formatted.append("- ").append(line).append("\n");
+            } else {
+                formatted.append(line).append("\n");
+            }
+        }
+        return formatted.toString();
+    }
+}    
+
