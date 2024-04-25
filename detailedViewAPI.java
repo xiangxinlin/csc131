@@ -1,5 +1,9 @@
 package com.example;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -8,125 +12,95 @@ import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 public class detailedViewAPI {
-    private static final String API_KEY = "42c073de1b0e477089808c29c9c27139"; // API Key included as requested
+    private static final String API_KEY = "42c073de1b0e477089808c29c9c27139";
 
-    @SuppressWarnings("static-access")
-	public void viewAPIDetails() {
+    public void viewAPIDetails() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter recipe ID:");
-        String id = scanner.nextLine().trim();
-
         try {
-            int recipeId = Integer.parseInt(id);
-            String requestURL = String.format(
-                    "https://api.spoonacular.com/recipes/" + id + "/information?apiKey=%s&includeNutrition=false&number=10", API_KEY);
-            //String requestURL1 = String.format("https://api.spoonacular.com/recipes/" + id + "/analyzedInstructions", API_KEY);
-
+            System.out.println("Enter recipe ID:");
+            String id = scanner.nextLine().trim();
+            String requestURL = String.format("https://api.spoonacular.com/recipes/%s/information?apiKey=%s&includeNutrition=false", id, API_KEY);
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(requestURL))
-                    .GET()
-                    .build();
-            /*
-            HttpRequest request1 = HttpRequest.newBuilder()
-                    .uri(URI.create(requestURL1))
-                    .GET()
-                    .build();
-            */
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURL)).GET().build();
 
-            try {
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                //HttpResponse<String> response1 = client.send(request1, HttpResponse.BodyHandlers.ofString());
-                
-                    String responseBody = response.body();
-                    //String responseBody1 = response1.body();
-                    printRecipeDetails(responseBody);
-                    
-            } catch (IOException | InterruptedException e) {
-                System.err.println("An error occurred while requesting recipes: " + e.getMessage());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                showRecipeDetails(response.body());
+            } else {
+                System.out.println("Failed to fetch recipe details with status code: " + response.statusCode());
             }
-        } catch (NumberFormatException e) {
-            // If the input is not a valid integer, print an error message and return
-            System.err.println("The recipe ID must be a numerical value. Please try again.");
+        } catch (IOException | InterruptedException e) {
+            System.err.println("An error occurred while requesting recipes: " + e.getMessage());
         }
     }
 
+    private void showRecipeDetails(String jsonData) {
+        Gson gson = new Gson();
+        JsonObject recipeObject = gson.fromJson(jsonData, JsonObject.class);
 
-    private static void printRecipeDetails(String jsonData) {
         System.out.println("\nRecipe Details:");
         System.out.println("____________________");
-        //Title
-        System.out.println("\nTitle: ");
-        String[] titlePart = jsonData.split("\"title\":\"");
-        for (int i = 1; i < titlePart.length; i++) {
-            String title = titlePart[i].split("\"", 2)[0];
-            System.out.print(title);
+        System.out.println("\nTitle: " + getValue(recipeObject, "title"));
+        System.out.println("\nImage: " + getValue(recipeObject, "image"));
+        System.out.println("\nID: " + getValue(recipeObject, "id"));
+        System.out.println("\nServings: " + getValue(recipeObject, "servings"));
+        System.out.println("\nSummary: " + cleanHtml(getValue(recipeObject, "summary")));
+        System.out.println("\nDiets: " + arrayToString(recipeObject.getAsJsonArray("diets")));
+        System.out.println("\nCuisines: " + arrayToString(recipeObject.getAsJsonArray("cuisines")));
+        System.out.println("\nSpoonacular Score: " + getValue(recipeObject, "spoonacularScore"));
+        System.out.println("\nDish Types: " + arrayToString(recipeObject.getAsJsonArray("dishTypes")));
+        System.out.println("\nIngredients: \n" + getIngredients(recipeObject.getAsJsonArray("extendedIngredients")));
+        System.out.println("Instructions: \n" + getInstructions(recipeObject.getAsJsonArray("analyzedInstructions")));
+    }
+
+    private String getValue(JsonObject jsonObject, String key) {
+        if (jsonObject.has(key) && !jsonObject.get(key).isJsonNull()) {
+            return jsonObject.get(key).getAsString();
         }
-        //Summary
-        System.out.println("\n\nSummary: ");
-        String[] summaryPart = jsonData.split("\"summary\":\"");
-        for (int i = 1; i < summaryPart.length; i++) {
-            String summary = summaryPart[i].split("\"", 2)[0];
-            System.out.print(summary);
+        return "Not available";
+    }
+
+    private String cleanHtml(String htmlString) {
+        return htmlString.replaceAll("<[^>]*>", "");
+    }
+
+    private String arrayToString(JsonArray jsonArray) {
+        if (jsonArray == null || jsonArray.size() == 0) {
+            return "Not available";
         }
-        //Ingredients
-        System.out.println("\n\nIngredients: ");
-        String[] ingredientPart = jsonData.split("\"name\":\"");
-        for (int i = 1; i < ingredientPart.length; i++) {
-            String ingredient = ingredientPart[i].split("\"", 2)[0];
-            System.out.print(ingredient + ", ");
+        StringBuilder result = new StringBuilder();
+        for (JsonElement element : jsonArray) {
+            result.append(element.getAsString()).append(", ");
         }
-        ///*
-        System.out.println("\n\nInstructions: ");
-        String[] instructionsPart = jsonData.split("\"step\":\"");
-        int count = 1;
-        for (int i = 1; i < instructionsPart.length; i++) {
-            String instructions = instructionsPart[i].split("\"", 2)[0];
-            System.out.println(count++ + ". " + instructions);
+        return result.length() > 0 ? result.substring(0, result.length() - 2) : "Not available";
+    }
+
+    private String getIngredients(JsonArray ingredients) {
+        if (ingredients == null || ingredients.size() == 0) {
+            return "Not available";
         }
-        //*/
-        //Servings
-        String[] parts = jsonData.split(",");
-        for (String part : parts) {
-            // Look for the part containing the servings information
-            if (part.contains("\"servings\"")) {
-                // Split the part containing servings by :
-                String[] servingPart = part.split(":");
-                // Get the serving value
-                String servingsValue = servingPart[1].trim();
-                // Print the servings
-                System.out.println("\n\nServings: " + servingsValue);
-                // Break the loop since we found the servings information
-                break;
+        StringBuilder ingredientList = new StringBuilder();
+        for (JsonElement element : ingredients) {
+            JsonObject ingredient = element.getAsJsonObject();
+            String detail = ingredient.get("original").getAsString();
+            ingredientList.append("- ").append(detail).append("\n");
+        }
+        return ingredientList.toString();
+    }
+
+    private String getInstructions(JsonArray instructionsArray) {
+        if (instructionsArray == null || instructionsArray.size() == 0) {
+            return "Not available";
+        }
+        StringBuilder instructions = new StringBuilder();
+        for (JsonElement instructionSet : instructionsArray) {
+            JsonObject instructionObject = instructionSet.getAsJsonObject();
+            JsonArray steps = instructionObject.getAsJsonArray("steps");
+            for (JsonElement stepElement : steps) {
+                JsonObject step = stepElement.getAsJsonObject();
+                instructions.append("- Step ").append(step.get("number").getAsInt()).append(": ").append(step.get("step").getAsString()).append("\n");
             }
         }
-        //Time
-        for (String part : parts) {
-            // Look for the part containing the time information
-            if (part.contains("\"readyInMinutes\"")) {
-                // Split the part containing time :
-                String[] timePart = part.split(":");
-                // Get the time value
-                String timeValue = timePart[1].trim();
-                // Print the time in minutes
-                System.out.println("\nTime: " + timeValue + " minutes");
-                // Break the loop since we found the time information
-                break;
-            }
-        }
-        //Dish Types
-        for (String part : parts) {
-            // Look for the part containing the dish types information
-            if (part.contains("\"dishTypes\"")) {
-                // Split the part containing dish types by ":"
-                String[] dishTypesPart = part.split(":");
-                // Get the dish types value
-                String dishTypesValue = dishTypesPart[1].trim();
-                // Print the dish types
-                System.out.println("\nDish Types: " + dishTypesValue);
-                // Break the loop since we found the dish types information
-                break;
-            }
-        }
+        return instructions.toString();
     }
 }
