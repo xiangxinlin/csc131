@@ -58,7 +58,12 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
                     System.out.println("------------------------------------------------------------------");
                     int index = 1;
                     for (Document recipe : savedRecipes) {
-                        System.out.println(index + ": " + recipe.getString("title") + "\n   -" + recipe.getString("image") + "\n   -" + recipe.getInteger("servings") + " servings");
+                        String readyInMinutes = getFormattedReadyInMinutes(recipe); // Use helper method to format the ready time
+                        String servingsFormatted = getFormattedServings(recipe);
+                        System.out.println(index + ": " + recipe.getString("title"));
+                        System.out.println("   - Image: " + recipe.getString("image"));
+                        System.out.println("   - Servings: " + servingsFormatted);
+                        System.out.println("   - Ready in: " + readyInMinutes);  // Display formatted ready time
                         System.out.println("------------------------------------------------------------------");
                         index++;
                     }
@@ -74,5 +79,17 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
     //method to clean html
     private static String cleanHtml(String htmlString){
         return htmlString.replaceAll("<[^>]*>", "");
+    }
+
+    // Helper method to format ready in minutes or return "N/A" if not applicable
+    private static String getFormattedReadyInMinutes(Document recipe) {
+        Integer minutes = recipe.getInteger("readyInMinutes");
+        return (minutes != null && minutes > 0) ? minutes + " minutes" : "N/A";
+    }
+    
+    //"N/A" if servings is 0
+    private static String getFormattedServings(Document recipe) {
+        Integer servings = recipe.getInteger("servings");
+        return (servings != null && servings > 0) ? servings.toString() + " servings" : "N/A";
     }
 }
