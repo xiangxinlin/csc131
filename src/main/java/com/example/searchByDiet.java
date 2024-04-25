@@ -19,7 +19,7 @@ public class searchByDiet {
     
     public void searchDiet() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Here is a list of supported diets: \n- Gluten-Free \n- Ketogenic \n- Vegetarian \n- Lacto-Vegetarian \n- Ovo-Vegetarian \n- Vegan \n- Pescetarian \n- Paleo \n- Primal \n- Low-FODMAP \n- Whole30");
+        System.out.println("Here is a list of supported diets: \n- Gluten-Free \n- Ketogenic \n- Vegetarian \n- Lacto-Vegetarian \n- Ovo-Vegetarian \n- Vegan \n- Pescetarian \n- Paleo \n- Primal \n- Low-FODMAP \n- Whole30\n");
         System.out.println("Enter your diet:");
         String diet = scanner.nextLine().toLowerCase();
 
@@ -41,20 +41,18 @@ public class searchByDiet {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
-            printRecipeTitles(responseBody);
+            String jsonResponse = response.body();
+
+            if (jsonResponse != null) {
+                List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
+                if (!recipes.isEmpty()) {
+                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                } else {
+                    System.out.println("No recipes found matching your query.");
+                }
+            }
         } catch (IOException | InterruptedException e) {
             System.err.println("An error occurred while requesting recipes: " + e.getMessage());
-        }
-    }
-
-    private static void printRecipeTitles(String jsonData) {
-        System.out.println("\nList of Recipes:");
-        String[] parts = jsonData.split("\"title\":\"");
-        int count = 1;
-        for (int i = 1; i < parts.length; i++) {
-            String title = parts[i].split("\"", 2)[0];
-            System.out.println(count++ + ". " + title);
         }
     }
 }
