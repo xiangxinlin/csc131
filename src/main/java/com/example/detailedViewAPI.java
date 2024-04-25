@@ -44,6 +44,7 @@ public class detailedViewAPI {
         System.out.println("\nImage: " + getValue(recipeObject, "image"));
         System.out.println("\nID: " + getValue(recipeObject, "id"));
         System.out.println("\nServings: " + getValue(recipeObject, "servings"));
+        System.out.println("\nReady in: " + getValue(recipeObject, "readyInMinutes") + " minutes");
         System.out.println("\nSummary: " + cleanHtml(getValue(recipeObject, "summary")));
         System.out.println("\nDiets: " + arrayToString(recipeObject.getAsJsonArray("diets")));
         System.out.println("\nCuisines: " + arrayToString(recipeObject.getAsJsonArray("cuisines")));
@@ -51,6 +52,18 @@ public class detailedViewAPI {
         System.out.println("\nDish Types: " + arrayToString(recipeObject.getAsJsonArray("dishTypes")));
         System.out.println("\nIngredients: \n" + getIngredients(recipeObject.getAsJsonArray("extendedIngredients")));
         System.out.println("Instructions: \n" + getInstructions(recipeObject.getAsJsonArray("analyzedInstructions")));
+        
+        // Adding Nutrition Details
+        JsonObject nutrition = recipeObject.getAsJsonObject("nutrition");
+        JsonArray nutrients = nutrition.getAsJsonArray("nutrients");
+        System.out.println("\nNutrition Details:");
+        for (JsonElement nutrientElement : nutrients) {
+            JsonObject nutrient = nutrientElement.getAsJsonObject();
+            String name = nutrient.get("name").getAsString();
+            double amount = nutrient.get("amount").getAsDouble();
+            String unit = nutrient.get("unit").getAsString();
+            System.out.println("- " + name + ": " + amount + " " + unit);
+        }
     }
 
     private String getValue(JsonObject jsonObject, String key) {
