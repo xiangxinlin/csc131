@@ -145,7 +145,7 @@ public class recipeJsonParser {
 
             return instructionList.toString();
         } else {
-            return "No instructions listed or incorrect data format.";
+            return "No instructions listed.";
         }
     }
 }
