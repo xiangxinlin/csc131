@@ -30,7 +30,7 @@ public class searchByDiet {
         }
         
         String requestURL = String.format(
-                "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&diet=%s&addRecipeInformation=true&number=10",
+                "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&diet=%s&addRecipeInformation=true&number=10&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true",
                 API_KEY, diet);
 
         HttpClient client = HttpClient.newHttpClient();
