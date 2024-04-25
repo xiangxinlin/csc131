@@ -27,7 +27,7 @@ public class searchByTitle {
     }
 
     private String fetchRecipes(String query) {
-        String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + query + "&apiKey=" + API_KEY + "&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true";
+        String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + query + "&apiKey=" + API_KEY + "&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true";
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

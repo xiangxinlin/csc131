@@ -17,7 +17,7 @@ public class searchByID {
         System.out.println("Enter the ID of the recipe you'd like to find:");
         String recipeId = scanner.nextLine().trim();
 
-        String url = String.format("https://api.spoonacular.com/recipes/%s/information?apiKey=%s", recipeId, API_KEY);
+        String url = String.format("https://api.spoonacular.com/recipes/%s/information?apiKey=%s&includeNutrition=true", recipeId, API_KEY);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();

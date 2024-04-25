@@ -19,7 +19,7 @@ public class searchByIngredients {
         
         // Create the request URL with the API key and formatted ingredients.
         String requestURL = String.format(
-            "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&includeIngredients=%s&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true",
+            "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&includeIngredients=%s&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true",
             API_KEY, ingredients);
 
         HttpClient client = HttpClient.newHttpClient();

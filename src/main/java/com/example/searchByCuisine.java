@@ -19,7 +19,7 @@ public class searchByCuisine{
 
         // Construct the request URL
         String requestURL = String.format(
-                "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&cuisine=%s&number=10&addRecipeInformation=true&addRecipeInstructions=true&fillIngredients=true",
+                "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&cuisine=%s&number=10&addRecipeInformation=true&addRecipeInstructions=true&fillIngredients=true&addRecipeNutrition=true",
                 API_KEY, cuisine);
 
         // Create the HTTP client and request
