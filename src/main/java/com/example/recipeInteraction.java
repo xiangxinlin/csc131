@@ -30,10 +30,11 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
                     String dishTypes = recipeDetails.length > 9 ? recipeDetails[9] : "No dish types";
                     String ingredients = recipeDetails.length > 10 ? recipeDetails[10] : "No ingredients";
                     String instructions = recipeDetails.length > 11 ? recipeDetails[11] : "No instructions";
-                    int readyInMinutes = recipeDetails.length > 12 ? Integer.parseInt(recipeDetails[12]) : 0;
+                    String nutrition = recipeDetails.length > 12 ? recipeDetails[12] : "No nutrition";
+                    int readyInMinutes = recipeDetails.length > 13 ? Integer.parseInt(recipeDetails[13]) : 0;
 
                     // Call method to save the recipe in the database
-                    recipeSaverInstance.saveRecipe(title, image, servings, id, imageType, summary, diets, cuisines, spoonacularScore, dishTypes, ingredients, instructions, readyInMinutes);
+                    recipeSaverInstance.saveRecipe(title, image, servings, id, imageType, summary, diets, cuisines, spoonacularScore, dishTypes, ingredients, instructions, nutrition, readyInMinutes);
                 } else {
                     System.out.println("Invalid recipe number.");
                 }
@@ -90,6 +91,6 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
     //"N/A" if servings is 0
     private static String getFormattedServings(Document recipe) {
         Integer servings = recipe.getInteger("servings");
-        return (servings != null && servings > 0) ? servings.toString() + " servings" : "N/A";
+        return (servings != null && servings > 0) ? servings + " servings" : "N/A";
     }
 }
