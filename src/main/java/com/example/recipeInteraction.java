@@ -59,12 +59,16 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
                     System.out.println("------------------------------------------------------------------");
                     int index = 1;
                     for (Document recipe : savedRecipes) {
-                        String readyInMinutes = getFormattedReadyInMinutes(recipe); // Use helper method to format the ready time
+                        String title = recipe.getString("title");
+                        String image = recipe.getString("image");
+                        int id = recipe.getInteger("id", -1);
                         String servingsFormatted = getFormattedServings(recipe);
-                        System.out.println(index + ": " + recipe.getString("title"));
-                        System.out.println("   - Image: " + recipe.getString("image"));
-                        System.out.println("   - Servings: " + servingsFormatted);
-                        System.out.println("   - Ready in: " + readyInMinutes);  // Display formatted ready time
+                        String readyInMinutes = getFormattedReadyInMinutes(recipe);
+                        System.out.println(index + ": " + title);
+                        System.out.println("   -ID: " + id);  // Printing ID
+                        System.out.println("   -Image: " + image);
+                        System.out.println("   -Servings: " + servingsFormatted);
+                        System.out.println("   -Ready in: " + readyInMinutes);
                         System.out.println("------------------------------------------------------------------");
                         index++;
                     }
