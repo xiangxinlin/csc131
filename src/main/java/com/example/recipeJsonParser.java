@@ -53,7 +53,7 @@ public class recipeJsonParser {
                 index++;
             }
         } else {
-            System.out.println("No recipes found.");
+            System.out.println("\nNo recipes found.");
         }
     }
 
