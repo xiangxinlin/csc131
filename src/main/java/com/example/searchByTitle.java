@@ -15,19 +15,38 @@ public class searchByTitle {
         System.out.println("Enter your query: ");
         String findQuery = scanner.nextLine();
 
-        String jsonResponse = fetchRecipes(findQuery);
-        if (jsonResponse != null) {
-            List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
-            if (!recipes.isEmpty()) {
-                recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+        int page = 1;
+        boolean continueSearch = true;
+        while (continueSearch) {
+            String jsonResponse = fetchRecipes(findQuery, page);
+            if (jsonResponse != null) {
+                List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
+                if (!recipes.isEmpty()) {
+                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                    System.out.println("\n\nDo you want to fetch more recipes? (yes/no)");
+                    String answer = scanner.nextLine();
+                    if ("yes".equalsIgnoreCase(answer)) {
+                        page++;
+                    } else {
+                        continueSearch = false;
+                    }
+                } else {
+                    System.out.println("Limited Results.");
+                    continueSearch = false;
+                }
             } else {
-                System.out.println("No recipes found to save.");
+                continueSearch = false;
             }
         }
     }
 
-    private String fetchRecipes(String query) {
-        String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + query + "&apiKey=" + API_KEY + "&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true";
+    private String fetchRecipes(String query, int page) {
+        int resultsPerPage = 10; // This can be adjusted
+        int offset = (page - 1) * resultsPerPage;
+    
+        String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + query
+            + "&apiKey=" + API_KEY + "&number=" + resultsPerPage + "&offset=" + offset
+            + "&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true";
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
