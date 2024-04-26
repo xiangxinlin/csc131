@@ -60,8 +60,21 @@ public class viewRecipes {
         System.out.println("\nCuisine(s): " + safeGetString(recipeDetails, "cuisines", "Not available"));
         System.out.println("\nIngredients: \n" + formatListItems(safeGetString(recipeDetails, "ingredients", "No ingredients listed")));
         System.out.println("\nInstructions: \n" + formatInstructions(safeGetString(recipeDetails, "instructions", "No instructions provided")));
+        System.out.println("\nNutrients:\n" + formatNutrients(safeGetString(recipeDetails, "nutrition", "No nutrition information")));
     }
-
+    
+    private String formatNutrients(String nutrients) {
+        if (nutrients.equals("No nutrition information")) {
+            return nutrients;
+        }
+        String[] items = nutrients.split(", ");
+        StringBuilder formatted = new StringBuilder();
+        for (String item : items) {
+            formatted.append("- ").append(item).append("\n");
+        }
+        return formatted.toString();
+    }
+    
     private String safeGetString(Document document, String key, String defaultValue) {
         Object value = document.get(key);
         return value != null ? value.toString() : defaultValue;
