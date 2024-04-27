@@ -29,9 +29,14 @@ public class searchByDiet {
             return; // Exit the method if diet is not supported
         }
         
-        String requestURL = String.format(
-                "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&diet=%s&addRecipeInformation=true&number=10&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true",
-                API_KEY, diet);
+        int page = 1;
+        int resultsPerPage = 10;
+        boolean continueSearch = true;
+        while (continueSearch) {
+            int offset = (page - 1) * resultsPerPage;
+            String requestURL = String.format(
+                    "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&diet=%s&number=%d&offset=%d&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true",
+                    API_KEY, diet, resultsPerPage, offset);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -39,20 +44,34 @@ public class searchByDiet {
                 .GET()
                 .build();
 
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String jsonResponse = response.body();
-
-            if (jsonResponse != null) {
-                List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
-                if (!recipes.isEmpty()) {
-                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+            try {
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200) {
+                    String jsonResponse = response.body();
+                    if (jsonResponse != null) {
+                        List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
+                        if (!recipes.isEmpty()) {
+                            recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                            System.out.println("\n\nDo you want to fetch more recipes? (yes/no)");
+                            String answer = scanner.nextLine();
+                            if ("yes".equalsIgnoreCase(answer)) {
+                                page++;
+                            } else {
+                                continueSearch = false;
+                            }
+                        } else {
+                            System.out.println("No recipes found matching your query.");
+                            continueSearch = false;
+                        }
+                    }
                 } else {
-                    System.out.println("No recipes found matching your query.");
+                    System.out.println("Failed to fetch recipes: HTTP error code : " + response.statusCode());
+                    continueSearch = false;
                 }
+            } catch (IOException | InterruptedException e) {
+                System.err.println("An error occurred while requesting recipes: " + e.getMessage());
+                continueSearch = false;
             }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("An error occurred while requesting recipes: " + e.getMessage());
         }
     }
 }
