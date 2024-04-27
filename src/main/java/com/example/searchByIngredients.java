@@ -43,7 +43,7 @@ public class searchByIngredients {
                         List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
                         if (!recipes.isEmpty()) {
                             recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
-                            System.out.println("\nDo you want to fetch more recipes? (yes/no)");
+                            System.out.println("\n\nDo you want to fetch more recipes? (yes/no)");
                             String answer = scanner.nextLine();
                             if ("yes".equalsIgnoreCase(answer)) {
                                 page++;
