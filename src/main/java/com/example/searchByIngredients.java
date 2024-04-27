@@ -15,12 +15,17 @@ public class searchByIngredients {
     public void searchIngredients() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter ingredients separated by commas (e.g., tomato,egg):");
-        String ingredients = scanner.nextLine().trim().replaceAll("\\s+", "");
         
-        // Create the request URL with the API key and formatted ingredients.
-        String requestURL = String.format(
-            "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&includeIngredients=%s&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true",
-            API_KEY, ingredients);
+        int page = 1;
+        boolean continueSearch = true;
+        while (continueSearch) {
+            String ingredients = scanner.nextLine().trim().replaceAll("\\s+", "");
+            
+            int resultsPerPage = 10;
+            int offset = (page - 1) * resultsPerPage;
+            String requestURL = String.format(
+                "https://api.spoonacular.com/recipes/complexSearch?apiKey=%s&includeIngredients=%s&number=%d&offset=%d&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true",
+                API_KEY, ingredients, resultsPerPage, offset);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -28,21 +33,36 @@ public class searchByIngredients {
                 .GET()
                 .build();
 
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String jsonResponse = response.body();
-        
-            // Process the JSON response using a custom parser.
-            if (jsonResponse != null) {
-                List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
-                if (!recipes.isEmpty()) {
-                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+            try {
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() == 200) {
+                    String jsonResponse = response.body();
+
+                    // Process the JSON response using a custom parser.
+                    if (jsonResponse != null) {
+                        List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
+                        if (!recipes.isEmpty()) {
+                            recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                            System.out.println("\nDo you want to fetch more recipes? (yes/no)");
+                            String answer = scanner.nextLine();
+                            if ("yes".equalsIgnoreCase(answer)) {
+                                page++;
+                            } else {
+                                continueSearch = false;
+                            }
+                        } else {
+                            System.out.println("No recipes found with these ingredients. Try different ingredients.");
+                            continueSearch = false;
+                        }
+                    }
                 } else {
-                    System.out.println("Please enter ingredients correctly.");
+                    System.out.println("Failed to fetch recipes: HTTP error code : " + response.statusCode());
+                    continueSearch = false;
                 }
+            } catch (IOException | InterruptedException e) {
+                System.err.println("An error occurred while requesting recipes: " + e.getMessage());
+                continueSearch = false;
             }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("An error occurred while requesting recipes: " + e.getMessage());
         }
     }
 }
