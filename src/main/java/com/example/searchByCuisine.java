@@ -30,17 +30,18 @@ public class searchByCuisine{
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(requestURL))
-                .GET()
+                .GET()  / Set method to GET.
                 .build();
 
             try {
+                // Send the request and receive the response.
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() == 200) {
+                if (response.statusCode() == 200) { / Check if the response status code is 200 (OK).
                     String jsonResponse = response.body();
                     if (jsonResponse != null) {
-                        List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
+                        List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse); // Parse the JSON response into a list of recipes.
                         if (!recipes.isEmpty()) {
-                            recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                            recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver()); // Handle the interaction for saving and viewing recipes.
                             System.out.println("\n\nDo you want to fetch more recipes? (yes/no)");
                             String answer = scanner.nextLine();
                             if ("yes".equalsIgnoreCase(answer)) {
@@ -49,15 +50,15 @@ public class searchByCuisine{
                                 continueSearch = false;
                             }
                         } else {
-                            System.out.println("No recipes found matching your cuisine. Try a different cuisine.");
-                            continueSearch = false;
+                            System.out.println("No recipes found matching your cuisine. Try a different cuisine."); 
+                            continueSearch = false;  // End search if no recipes are found.
                         }
                     }
                 } else {
-                    System.out.println("Failed to fetch recipes: HTTP error code : " + response.statusCode());
-                    continueSearch = false;
+                    System.out.println("Failed to fetch recipes: HTTP error code : " + response.statusCode()); // Handle unsuccessful API requests.
+                    continueSearch = false;  
                 }
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException | InterruptedException e) { // Catch and handle exceptions from the HTTP request.
                 System.err.println("An error occurred while requesting recipes: " + e.getMessage());
                 continueSearch = false;
             }
