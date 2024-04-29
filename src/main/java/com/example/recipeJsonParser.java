@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class recipeJsonParser {
+        
+    // Parse the JSON response and extract recipe details into a list.
     public static List<String> parseRecipes(String jsonResponse) {
         JsonElement jelement = JsonParser.parseString(jsonResponse);
         List<String> recipes = new ArrayList<>();
@@ -19,19 +21,22 @@ public class recipeJsonParser {
             processJsonArray(recipes, results);
         } else if (jelement.isJsonArray()) {
             JsonArray jsonArray = jelement.getAsJsonArray();
-            processJsonArray(recipes, jsonArray);
+            processJsonArray(recipes, jsonArray); // Directly process the JsonArray
         } else {
             System.out.println("No recipes found matching your query.");
         }
         return recipes;
     }
-
+    
+    // Process the JsonArray to extract recipe details and add them to the list
     private static void processJsonArray(List<String> recipes, JsonArray jsonArray) {
         if (jsonArray != null && jsonArray.size() > 0) {
             System.out.println("\nRecipes found:");
             System.out.println("--------------");
             int index = 1;
+            // Iterate through each element of the JsonArray.
             for (JsonElement element : jsonArray) {
+                // Extract various details using safe getter methods.
                 JsonObject recipe = element.getAsJsonObject();
                 String title = getStringSafe(recipe, "title");
                 String image = getStringSafe(recipe, "image");
@@ -57,6 +62,7 @@ public class recipeJsonParser {
         }
     }
 
+    // Safely retrieve a String value from a JsonObject, handling potential null or missing values
     private static String getStringSafe(JsonObject jsonObject, String key) {
         JsonElement element = jsonObject.get(key);
         if (element != null && !element.isJsonNull()) {
@@ -65,6 +71,7 @@ public class recipeJsonParser {
         return "Not available";
     }
 
+    // Safely retrieve an integer value from a JsonObject
     private static int getIntSafe(JsonObject jsonObject, String key) {
         JsonElement element = jsonObject.get(key);
         if (element != null && !element.isJsonNull()) {
@@ -76,7 +83,8 @@ public class recipeJsonParser {
         }
         return 0; // Default value if not available
     }
-
+    
+    // Safely retrieve a float value from a JsonObject, handling potential null or missing values
     private static float getFloatSafe(JsonObject jsonObject, String key) {
         JsonElement element = jsonObject.get(key);
         if (element != null && !element.isJsonNull()) {
@@ -89,6 +97,7 @@ public class recipeJsonParser {
         return 0.0f;
     }
 
+    // Safely retrieve a String representing a list of elements from a JsonArray within a JsonObject
     private static String getArraySafe(JsonObject jsonObject, String key) {
         JsonElement element = jsonObject.get(key);
         if (element != null && element.isJsonArray()) {
@@ -104,6 +113,7 @@ public class recipeJsonParser {
         return "Not available";
     }
 
+    // Extract and format a string containing a list of ingredients from a JsonObject
     private static String getIngredients(JsonObject jsonObject, String key) {
         if (jsonObject.has(key) && jsonObject.get(key).isJsonArray()) {
             JsonArray ingredients = jsonObject.getAsJsonArray(key);
@@ -115,12 +125,13 @@ public class recipeJsonParser {
                     ingredientList.append(ingredientInfo).append("; ");
                 }
             }
-            return ingredientList.toString();
+            return ingredientList.toString(); // Format the list of ingredients into a single string
         } else {
             return "No ingredients listed";
         }
     }
-
+    
+    // Parse and construct a detailed string containing cooking instructions from a JsonObject
     private static String getInstructions(JsonObject jsonObject, String key) {
         if (jsonObject.has(key) && jsonObject.get(key).isJsonArray()) {
             JsonArray instructionsArray = jsonObject.getAsJsonArray(key);
@@ -151,6 +162,7 @@ public class recipeJsonParser {
         }
     }
 
+    // Retrieve and format nutritional information from a JsonObject.
     private static String getNutrition(JsonObject jsonObject, String key) {
         if (jsonObject.has(key) && jsonObject.get(key).isJsonObject()) {
             JsonObject nutritionObject = jsonObject.getAsJsonObject(key);
