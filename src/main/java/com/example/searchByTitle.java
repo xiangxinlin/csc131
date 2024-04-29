@@ -17,12 +17,12 @@ public class searchByTitle {
 
         int page = 1;
         boolean continueSearch = true;
-        while (continueSearch) {
+        while (continueSearch) { //loop til user decides to stop fetching recipes 
             String jsonResponse = fetchRecipes(findQuery, page);
-            if (jsonResponse != null) {
+            if (jsonResponse != null) { //ensures api response is not null
                 List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse);
                 if (!recipes.isEmpty()) {
-                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver());
+                    recipeInteraction.handleRecipeSavingAndViewing(scanner, recipes.toArray(new String[0]), new recipeSaver()); //handles user interaction for recipe saving and viewing
                     System.out.println("\n\nDo you want to fetch more recipes? (yes/no)");
                     String answer = scanner.nextLine();
                     if ("yes".equalsIgnoreCase(answer)) {
@@ -40,36 +40,40 @@ public class searchByTitle {
         }
     }
 
+    //method to fetch recipes using HTTP requests
     private String fetchRecipes(String query, int page) {
-        int resultsPerPage = 10; // This can be adjusted
+        int resultsPerPage = 10; 
         int offset = (page - 1) * resultsPerPage;
-    
+
+        //constructs the URL
         String urlString = "https://api.spoonacular.com/recipes/complexSearch?query=" + query
             + "&apiKey=" + API_KEY + "&number=" + resultsPerPage + "&offset=" + offset
             + "&addRecipeInformation=true&fillIngredients=true&addRecipeInstructions=true&addRecipeNutrition=true";
+        //checks if connection to API is working 
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.connect();
+            conn.setRequestMethod("GET"); //use get method
+            conn.connect(); //connects to server
 
             int responseCode = conn.getResponseCode();
-            if (responseCode != 200) {
+            if (responseCode != 200) { //checks if connection is successful
                 System.out.println("Failed to fetch recipes: HTTP error code : " + responseCode);
                 return null;
             }
-
+            
+            // Reads the response from the input stream, building it into a single string
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder response = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                response.append(line);
+                response.append(line); //Appends each line of the response to the StringBuilder
             }
             reader.close();
             return response.toString();
         } catch (Exception e) {
             System.err.println("An error occurred while searching for recipes: " + e.getMessage());
-            return null;
+            return null; // Returns null if an error occurs during the connection
         }
     }
 }
