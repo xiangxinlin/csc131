@@ -6,11 +6,12 @@ import java.util.List;
 
 public class recipeInteraction {
 
-    // Handles both saving and viewing recipes based on user input.
+// Handles both saving and viewing recipes based on user input.
 public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipes, recipeSaver recipeSaverInstance) {
     System.out.println("\n\nEnter the numbers of the recipes you want to save, separated by spaces, or enter 'none' to skip:");
     String input = scanner.nextLine();
 
+    // Process user input to save selected recipes.
     if (!input.equalsIgnoreCase("none")) {
         String[] selectedRecipeNumbers = input.split("\\s+");
         for (String recipeNumberStr : selectedRecipeNumbers) {
@@ -51,11 +52,11 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
             String response = scanner.nextLine().trim().toLowerCase();
             if (response.equals("yes")) {
                 validInputReceived = true;
-                List<Document> savedRecipes = recipeSaverInstance.getSavedRecipes();
+                List<Document> savedRecipes = recipeSaverInstance.getSavedRecipes();  // Retrieve saved recipes from the database.
                 if (savedRecipes.isEmpty()) {
                     System.out.println("No saved recipes found.");
-                } else {
-                    System.out.println("\nSaved Recipes:");
+                } else { //to display formatted recipe information,format servings and preparation time.
+                    System.out.println("\nSaved Recipes:"); 
                     System.out.println("------------------------------------------------------------------");
                     int index = 1;
                     for (Document recipe : savedRecipes) {
@@ -81,20 +82,19 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
         }
     }
 
-    //method to clean html
     private static String cleanHtml(String htmlString){
-        return htmlString.replaceAll("<[^>]*>", "");
+        return htmlString.replaceAll("<[^>]*>", ""); // Remove HTML tags from strings.
     }
 
     // Helper method to format ready in minutes or return "N/A" if not applicable
     private static String getFormattedReadyInMinutes(Document recipe) {
         Integer minutes = recipe.getInteger("readyInMinutes");
-        return (minutes != null && minutes > 0) ? minutes + " minutes" : "N/A";
+        return (minutes != null && minutes > 0) ? minutes + " minutes" : "N/A"; // Format ready in minutes or return "N/A"
     }
     
     //"N/A" if servings is 0
     private static String getFormattedServings(Document recipe) {
         Integer servings = recipe.getInteger("servings");
-        return (servings != null && servings > 0) ? servings + " servings" : "N/A";
+        return (servings != null && servings > 0) ? servings + " servings" : "N/A"; // Format ready in minutes or return "N/A"
     }
 }
