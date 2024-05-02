@@ -13,40 +13,34 @@ public class recipeCreator{
     public void create(){
         try {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter the title of the recipe you'd like to create:");
+            System.out.println("\nEnter the title of the recipe you'd like to create:");
             String title = scanner.nextLine();
-            System.out.println("Enter the image address:");
-            String image = scanner.nextLine();
-            System.out.println("Enter the serving size:");
-            int servings = scanner.nextInt();
-            System.out.println("Enter the image type of the recipe image:");
-            String imageType = scanner.next();
-            System.out.println("Enter the summary:");
-            String summary = scanner.next();
-            System.out.println("Enter the recipe's diet type(s) separated by commas:");
-            String diets = scanner.next();
-            System.out.println("Enter the recipe's cuisine type(s) separated by commas:");
-            String cuisines = scanner.next();
-            System.out.println("Enter your rating for this recipe:");
-            double rating = scanner.nextDouble();
-            System.out.println("Enter the recipe's dish type(s):");
-            String dishTypes = scanner.next();
-            System.out.println("Enter the ingredients separated by commas:");
-            String ingredients = scanner.next();
-            System.out.println("Enter the instructions:");
-            String instructions = scanner.next();
-            System.out.println("Enter the nutritional values separated by commas:");
-            String nutrition = scanner.next();
-            System.out.println("Enter the ready time in minutes:");
-            int readyInMinutes = scanner.nextInt();
+            System.out.println("\nEnter the serving size:");
+            int servings = Integer.parseInt(scanner.nextLine());
+            System.out.println("\nEnter the summary:");
+            String summary = scanner.nextLine();
+            System.out.println("\nEnter the recipe's diet type(s) separated by commas:");
+            String diets = scanner.nextLine();
+            System.out.println("\nEnter the recipe's cuisine type(s) separated by commas:");
+            String cuisines = scanner.nextLine();
+            System.out.println("\nEnter the recipe's dish type(s):");
+            String dishTypes = scanner.nextLine();
+            System.out.println("\nEnter the ingredients separated by commas:");
+            String ingredients = scanner.nextLine();
+            System.out.println("\nEnter the instructions:");
+            String instructions = scanner.nextLine();
+            System.out.println("\nEnter the nutritional values separated by commas:");
+            String nutrition = scanner.nextLine();
+            System.out.println("\nEnter the ready time in minutes:");
+            int readyInMinutes = Integer.parseInt(scanner.nextLine());
 
-            createRecipe(title, image, servings, imageType, summary, diets, cuisines, rating, dishTypes, ingredients, instructions, nutrition, readyInMinutes);
+            createRecipe(title, servings, summary, diets, cuisines, dishTypes, ingredients, instructions, nutrition, readyInMinutes);
         }catch(Exception e){
             System.err.println("An error occurred while processing the input: " + e.getMessage());
         }
     }
 
-    public void createRecipe(String title, String image, int servings, String imageType, String summary, String diets, String cuisines, double rating, String dishTypes, String ingredients, String instructions, String nutrition, int readyInMinutes){
+    public void createRecipe(String title, int servings, String summary, String diets, String cuisines, String dishTypes, String ingredients, String instructions, String nutrition, int readyInMinutes){
 
         try (MongoClient mongoClient = MongoClients.create(MONGODB_URI)) {
             // Connect to MongoDB and access the specified database and collection
@@ -55,8 +49,8 @@ public class recipeCreator{
 
             // Create a new document
             Document document = new Document();
-            document.append("title", title).append("image", image).append("servings", servings).append("imageType", imageType)
-                    .append("summary", summary).append("diets", diets).append("cuisines", cuisines).append("rating", rating)
+            document.append("title", title).append("servings", servings)
+                    .append("summary", summary).append("diets", diets).append("cuisines", cuisines)
                     .append("dishTypes", dishTypes).append("ingredients", ingredients).append("instructions", instructions)
                     .append("nutrition", nutrition).append("readyInMinutes", readyInMinutes);
             // Insert the document into the collection
