@@ -42,7 +42,6 @@ public class recipeJsonParser {
                 String image = getStringSafe(recipe, "image");
                 int servings = getIntSafe(recipe, "servings");
                 int id = getIntSafe(recipe, "id");
-                String imageType = getStringSafe(recipe, "imageType");
                 String summary = getStringSafe(recipe, "summary");
                 String diets = getArraySafe(recipe, "diets");
                 String cuisines = getArraySafe(recipe, "cuisines");
@@ -54,7 +53,7 @@ public class recipeJsonParser {
                 int readyInMinutes = getIntSafe(recipe, "readyInMinutes");
                 System.out.println(index + ". " + title + "\n   -ID: " + id + "\n   -" + image + "\n   -" + servings + " servings"+ "\n   -Ready in: " + readyInMinutes + " minutes");
                 System.out.println("------------------------------------------------------------------");
-                recipes.add(title + " - " + image + " - " + servings + " - " + id + " - " + imageType + " - " + summary + " - " + diets + " - " + cuisines + " - " + spoonacularScore + " - " + dishTypes + " - " + ingredients + " - " + instructions + " - " + nutrition + " - " + readyInMinutes);
+                recipes.add(title + " - " + image + " - " + servings + " - " + id + " - " + summary + " - " + diets + " - " + cuisines + " - " + spoonacularScore + " - " + dishTypes + " - " + ingredients + " - " + instructions + " - " + nutrition + " - " + readyInMinutes);
                 index++;
             }
         } else {

@@ -23,19 +23,18 @@ public static void handleRecipeSavingAndViewing(Scanner scanner, String[] recipe
                     String image = recipeDetails.length > 1 ? recipeDetails[1] : "Image not available";
                     int servings = recipeDetails.length > 2 ? Integer.parseInt(recipeDetails[2].split(" ")[0]) : 0;
                     int id = recipeDetails.length > 3 ? Integer.parseInt(recipeDetails[3]) : -1;
-                    String imageType = recipeDetails.length > 4 ? recipeDetails[4] : "No image type";
-                    String summary = recipeDetails.length > 5 ? cleanHtml(recipeDetails[5]) : "No summary";
-                    String diets = recipeDetails.length > 6 ? recipeDetails[6] : "No diets";
-                    String cuisines = recipeDetails.length > 7 ? recipeDetails[7] : "No cuisines";
-                    float spoonacularScore = recipeDetails.length > 8 ? Float.parseFloat(recipeDetails[8]) : 0.0f;
-                    String dishTypes = recipeDetails.length > 9 ? recipeDetails[9] : "No dish types";
-                    String ingredients = recipeDetails.length > 10 ? recipeDetails[10] : "No ingredients";
-                    String instructions = recipeDetails.length > 11 ? recipeDetails[11] : "No instructions";
-                    String nutrition = recipeDetails.length > 12 ? recipeDetails[12] : "No nutrition";
-                    int readyInMinutes = recipeDetails.length > 13 ? Integer.parseInt(recipeDetails[13]) : 0;
+                    String summary = recipeDetails.length > 4 ? cleanHtml(recipeDetails[4]) : "No summary";
+                    String diets = recipeDetails.length > 5 ? recipeDetails[5] : "No diets";
+                    String cuisines = recipeDetails.length > 6 ? recipeDetails[6] : "No cuisines";
+                    float spoonacularScore = recipeDetails.length > 7 ? Float.parseFloat(recipeDetails[7]) : 0.0f;
+                    String dishTypes = recipeDetails.length > 8 ? recipeDetails[8] : "No dish types";
+                    String ingredients = recipeDetails.length > 9 ? recipeDetails[9] : "No ingredients";
+                    String instructions = recipeDetails.length > 10 ? recipeDetails[10] : "No instructions";
+                    String nutrition = recipeDetails.length > 11 ? recipeDetails[11] : "No nutrition";
+                    int readyInMinutes = recipeDetails.length > 12 ? Integer.parseInt(recipeDetails[12]) : 0;
 
                     // Call method to save the recipe in the database
-                    recipeSaverInstance.saveRecipe(title, image, servings, id, imageType, summary, diets, cuisines, spoonacularScore, dishTypes, ingredients, instructions, nutrition, readyInMinutes);
+                    recipeSaverInstance.saveRecipe(title, image, servings, id, summary, diets, cuisines, spoonacularScore, dishTypes, ingredients, instructions, nutrition, readyInMinutes);
                 } else {
                     System.out.println("Invalid recipe number.");
                 }

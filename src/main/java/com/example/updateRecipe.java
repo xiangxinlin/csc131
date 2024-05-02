@@ -14,10 +14,13 @@ public class updateRecipe {
 
     public void update() {
         try {
+            viewRecipes ViewRecipes = new viewRecipes();
+            ViewRecipes.recipeDetails();
+
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the title of the recipe you'd like to update:");
             String title = scanner.nextLine();
-            System.out.println("Enter the field you want to update:");
+            System.out.println("Enter the field you want to update:\n(title/image/servings/id/imageType/summary/diets/cuisines/spoonacularScore/dishTypes/ingredients/instructions/nutrition/readyInMinutes)");
             String field = scanner.nextLine();
             System.out.println("Enter the new value for the field:");
             String value = scanner.nextLine();
@@ -36,7 +39,7 @@ public class updateRecipe {
             MongoCollection<Document> collection = database.getCollection("spoonacularRecipes");
 
             // Define query to find the document with the given title
-            Document query = new Document("title", title);
+            Document query = new Document("title", new Document("$regex", "^" + title + "$").append("$options", "i"));
             
             // Define update to set the specified field to the new value
             Document update = new Document("$set", new Document(field, value));

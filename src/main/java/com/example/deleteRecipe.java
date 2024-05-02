@@ -14,6 +14,9 @@ public class deleteRecipe {
     public void delete(){
         // Use scanner for user input
         try {
+            viewRecipes ViewRecipes = new viewRecipes();
+            ViewRecipes.recipeDetails();
+
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the title of the recipe you wish to delete:");
             String title = scanner.nextLine();
@@ -31,8 +34,11 @@ public class deleteRecipe {
             MongoDatabase database = mongoClient.getDatabase("recipeProject");
             MongoCollection<Document> collection = database.getCollection("spoonacularRecipes");
 
+            // Create a query to find the document by the lowercase title
+            Document query = new Document("title", new Document("$regex", "^" + title + "$").append("$options", "i"));
+
             // Attempt to delete the document with the given title
-            if (collection.deleteOne(new Document("title", title)).getDeletedCount() > 0) {
+            if (collection.deleteOne(query).getDeletedCount() > 0) {
                 // Print success message if document was deleted
                 System.out.println("Recipe deleted successfully.");
             } else {
