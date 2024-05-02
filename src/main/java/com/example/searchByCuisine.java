@@ -36,7 +36,7 @@ public class searchByCuisine{
             try {
                 // Send the request and receive the response.
                 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() == 200) { / Check if the response status code is 200 (OK).
+                if (response.statusCode() == 200) { // Check if the response status code is 200 (OK).
                     String jsonResponse = response.body();
                     if (jsonResponse != null) {
                         List<String> recipes = recipeJsonParser.parseRecipes(jsonResponse); // Parse the JSON response into a list of recipes.
