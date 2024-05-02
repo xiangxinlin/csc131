@@ -50,7 +50,7 @@ public class orderByCuisine {
 
         if (!recipeNames.isEmpty()) {
             int index = 1;
-            System.out.println("Cuisine Type: " + cuisineType);
+            System.out.println("\n\nCuisine Type: " + cuisineType);
             for (String recipeName : recipeNames) {
                 System.out.println(index + ". " + recipeName);
                 index++;
