@@ -30,7 +30,7 @@ public class searchByCuisine{
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(requestURL))
-                .GET()  / Set method to GET.
+                .GET()  // Set method to GET.
                 .build();
 
             try {
