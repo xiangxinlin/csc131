@@ -18,11 +18,11 @@ public class updateRecipe {
             ViewRecipes.recipeDetails();
 
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter the title of the recipe you'd like to update:");
+            System.out.println("\nEnter the title of the recipe you'd like to update:");
             String title = scanner.nextLine();
-            System.out.println("Enter the field you want to update:\n(title/image/servings/id/summary/diets/cuisines/spoonacularScore/dishTypes/ingredients/instructions/nutrition/readyInMinutes)");
+            System.out.println("\nEnter the field you want to update:\n(title/image/servings/id/summary/diets/cuisines/spoonacularScore/dishTypes/ingredients/instructions/nutrition/readyInMinutes)");
             String field = scanner.nextLine();
-            System.out.println("Enter the new value for the field:");
+            System.out.println("\nEnter the new value for the field:");
             String value = scanner.nextLine();
 
             updateDocument(title, field, value);
