@@ -13,6 +13,7 @@ public class viewRecipes {
 
         if (!savedRecipes.isEmpty()) {
             System.out.println("\n\nYour list of saved recipes:");
+            System.out.println("------------------------------------------------------------------");
             int index = 1;
             for (Document savedRecipe : savedRecipes) {
                 System.out.println(index + ": " + safeGetString(savedRecipe, "title", "No title available"));
