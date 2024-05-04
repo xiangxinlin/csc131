@@ -23,7 +23,7 @@ public class recipeSaver {
                     .append("dishTypes", dishTypes).append("ingredients", ingredients).append("instructions", instructions)
                     .append("nutrition", nutrition).append("readyInMinutes", readyInMinutes);
             collection.insertOne(recipe);
-            System.out.println("Recipe saved: " + title + " with " + servings + " servings");
+            System.out.println("\nRecipe saved: " + title + " with " + servings + " servings");
         } catch (Exception e) {
             System.err.println("Error saving recipe: " + e.getMessage());
         }
