@@ -7,6 +7,8 @@ import java.util.InputMismatchException;
 public class HomePage {
 
     public static void main(String[] args) {
+        mongodbOff logOff = new mongodbOff();
+        logOff.logOff();
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n   Welcome to the Recipe Management System");
         System.out.println("   ***************************************");
