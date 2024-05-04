@@ -20,7 +20,7 @@ public class updateRecipe {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter the title of the recipe you'd like to update:");
             String title = scanner.nextLine();
-            System.out.println("Enter the field you want to update:\n(title/image/servings/id/imageType/summary/diets/cuisines/spoonacularScore/dishTypes/ingredients/instructions/nutrition/readyInMinutes)");
+            System.out.println("Enter the field you want to update:\n(title/image/servings/id/summary/diets/cuisines/spoonacularScore/dishTypes/ingredients/instructions/nutrition/readyInMinutes)");
             String field = scanner.nextLine();
             System.out.println("Enter the new value for the field:");
             String value = scanner.nextLine();
