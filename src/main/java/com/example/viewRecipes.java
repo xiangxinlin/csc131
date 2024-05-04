@@ -29,24 +29,27 @@ public class viewRecipes {
             return;
         }
 
-        System.out.println("\nEnter the number of a recipe for detailed view (or '0' to go back):");
         int optionNum;
-        try {
-            optionNum = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
-        } catch (Exception e) {
-            System.out.println("ERROR: Invalid input. Please enter a valid number.");
-            scanner.next(); // Clear scanner wrong input
-            return;
-        }
+        while (true) {
+            System.out.println("\nEnter the number of a recipe for detailed view (or '0' to go back):");
+            try {
+                optionNum = scanner.nextInt();
+                scanner.nextLine();
 
-        if (optionNum >= 1 && optionNum <= savedRecipes.size()) {
-            Document recipeDetails = savedRecipes.get(optionNum - 1);
-            displayDetails(recipeDetails);
-        } else if (optionNum == 0) {
-            System.out.println("Returning...");
-        } else {
-            System.out.println("ERROR: Invalid choice selected");
+                if (optionNum >= 1 && optionNum <= savedRecipes.size()) {
+                    Document recipeDetails = savedRecipes.get(optionNum - 1);
+                    displayDetails(recipeDetails);
+                    break; // Exit the loop if a valid option is selected
+                } else if (optionNum == 0) {
+                    System.out.println("Returning...");
+                    return;
+                } else {
+                    System.out.println("ERROR: Invalid choice selected. Please enter a valid number.");
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: Invalid input. Please enter a valid number.");
+                scanner.next(); // Clear scanner wrong input
+            }
         }
     }
 
@@ -83,7 +86,7 @@ public class viewRecipes {
 
     private double safeGetDouble(Document document, String key, double defaultValue) {
         Object value = document.get(key);
-        if (value != null && value instanceof Number) {
+        if ((value instanceof Number)) {
             return ((Number) value).doubleValue();
         }
         return defaultValue;
