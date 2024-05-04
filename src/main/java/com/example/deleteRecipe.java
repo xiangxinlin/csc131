@@ -12,7 +12,6 @@ public class deleteRecipe {
     private static final String MONGODB_URI = "mongodb+srv://nick:csus@csc131.tct5wqu.mongodb.net/";
 
     public void delete(){
-        // Use scanner for user input
         try {
             viewRecipes ViewRecipes = new viewRecipes();
             ViewRecipes.recipeDetails();
